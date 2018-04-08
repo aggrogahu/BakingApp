@@ -4,17 +4,17 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Ingredient implements Parcelable {
-    String mQuantity;
-    String mIngredient;
+    public String quantity;
+    public String ingredient;
 
     public Ingredient(String quantity, String ingredient){
-        this.mQuantity = quantity;
-        this.mIngredient = ingredient;
+        this.quantity = quantity;
+        this.ingredient = ingredient;
     }
 
     private Ingredient(Parcel in) {
-        mQuantity = in.readString();
-        mIngredient = in.readString();
+        quantity = in.readString();
+        ingredient = in.readString();
     }
 
     public static final Creator<Ingredient> CREATOR = new Creator<Ingredient>() {
@@ -36,7 +36,7 @@ public class Ingredient implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mQuantity);
-        dest.writeString(mIngredient);
+        dest.writeString(quantity);
+        dest.writeString(ingredient);
     }
 }

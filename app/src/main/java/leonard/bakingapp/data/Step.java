@@ -4,23 +4,23 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Step implements Parcelable {
-    String mShortDes;
-    String mDescription;
-    String mVideoURL;
-    String mThumbnailURL;
+    public String shortDes;
+    public String description;
+    public String videoURL;
+    public String thumbnailURL;
 
     public Step (String shortDesc, String description, String videoURL, String thumbnailURL){
-        this.mShortDes = shortDesc;
-        this.mDescription = description;
-        this.mVideoURL = videoURL;
-        this.mThumbnailURL = thumbnailURL;
+        this.shortDes = shortDesc;
+        this.description = description;
+        this.videoURL = videoURL;
+        this.thumbnailURL = thumbnailURL;
     }
 
     private Step(Parcel in) {
-        mShortDes = in.readString();
-        mDescription = in.readString();
-        mVideoURL = in.readString();
-        mThumbnailURL = in.readString();
+        shortDes = in.readString();
+        description = in.readString();
+        videoURL = in.readString();
+        thumbnailURL = in.readString();
     }
 
     public static final Creator<Step> CREATOR = new Creator<Step>() {
@@ -42,9 +42,9 @@ public class Step implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mShortDes);
-        dest.writeString(mDescription);
-        dest.writeString(mVideoURL);
-        dest.writeString(mThumbnailURL);
+        dest.writeString(shortDes);
+        dest.writeString(description);
+        dest.writeString(videoURL);
+        dest.writeString(thumbnailURL);
     }
 }
