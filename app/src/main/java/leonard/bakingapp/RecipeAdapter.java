@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +54,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.CardViewHo
     public void onBindViewHolder(@NonNull CardViewHolder holder, final int position) {
         holder.mRecipeName.setText(mRecipeList.get(position));
 
-        final Intent intent = new Intent(mContext, RecipeActivity.class);
+        final Intent intent = new Intent(mContext, RecipeDetailActivity.class);
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
