@@ -59,13 +59,6 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof HeaderHolder){
-            Log.d(TAG, "onBindViewHolder HeaderHolder: " + position);
-        }
-        if (holder instanceof SubheaderHolder){
-            Log.d(TAG, "onBindViewHolder SubheaderHolder: " + position);
-        }
-
 
         switch (holder.getItemViewType()){
             case INGREDIENT:
@@ -73,12 +66,10 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 configureIngredientHolder(ingredientHolder,position);
                 break;
             case HEADER:
-                Log.d(TAG, "onBindViewHolder: switch HEADER");
                 HeaderHolder headerHolder = (HeaderHolder) holder;
                 configureHeaderHolder(headerHolder,position);
                 break;
             case SUBHEADER:
-                Log.d(TAG, "onBindViewHolder: switch SUBHEADER");
                 SubheaderHolder subheaderHolder = (SubheaderHolder) holder;
                 configureSubheaderHolder(subheaderHolder,position);
                 break;
@@ -123,13 +114,10 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemViewType(int position) {
-        Log.d(TAG, "getItemViewType: " + position);
         Object item = mDetailList.get(position);
         if(position==0 && item instanceof String){
-            Log.d(TAG, "getItemViewType position: " + position + " HEADER");
             return HEADER;
         } else if (item instanceof String){
-            Log.d(TAG, "getItemViewType position: " + position + " SUBHEADER");
             return SUBHEADER;
         } else if (item instanceof Ingredient){
             return INGREDIENT;
