@@ -55,7 +55,7 @@ public class RecipeDetailFragment extends Fragment {
 
         List<Object> mDetailList = getDummyArrayList();
 
-        mRecyclerView.setAdapter(new RecipeDetailAdapter(mDetailList));
+        mRecyclerView.setAdapter(new RecipeDetailAdapter(mDetailList, getContext()));
 
         return rootView;
     }

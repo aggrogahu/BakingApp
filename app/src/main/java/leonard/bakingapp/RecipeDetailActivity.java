@@ -16,13 +16,13 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 //    private RecyclerView.Adapter mAdapter;
 
 
-    //TODO refactor code to fragment
+    //COMPLETED refactor code to fragment
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
-
+// TODO Initialize the step detail with first step
 //        RecyclerView mRecyclerView = findViewById(R.id.recipe_detail_recycler_view);
 //        mRecyclerView.setHasFixedSize(true);
 //        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -37,6 +37,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
     @Override
     public void onStepSelected(int position) {
-
+//TODO launch/display step detail
     }
 }

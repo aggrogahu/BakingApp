@@ -1,11 +1,13 @@
 package leonard.bakingapp;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -23,9 +25,11 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private final int SUBHEADER = 1;
     private final int INGREDIENT = 2;
     private final int STEP = 3;
+    Context mContext;
 
-    public RecipeDetailAdapter(List<Object> objects){
+    public RecipeDetailAdapter(List<Object> objects, Context context){
         mDetailList = objects;
+        mContext = context;
     }
 
     @NonNull
@@ -58,32 +62,40 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
 
         switch (holder.getItemViewType()){
             case INGREDIENT:
                 IngredientHolder ingredientHolder = (IngredientHolder) holder;
-                configureIngredientHolder(ingredientHolder,position);
+                buildIngredientHolder(ingredientHolder,position);
                 break;
             case HEADER:
                 HeaderHolder headerHolder = (HeaderHolder) holder;
-                configureHeaderHolder(headerHolder,position);
+                buildHeaderHolder(headerHolder,position);
                 break;
             case SUBHEADER:
                 SubheaderHolder subheaderHolder = (SubheaderHolder) holder;
-                configureSubheaderHolder(subheaderHolder,position);
+                buildSubheaderHolder(subheaderHolder,position);
                 break;
             case STEP:
                 StepHolder stepHolder = (StepHolder) holder;
-                configureStepHolder(stepHolder,position);
-
+                buildStepHolder(stepHolder,position);
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //TODO launch or display selected step using interface from recipe detail activity
+//                        Toast.makeText(mContext, "Item Clicked: " + ((StepHolder) holder).getStringShortDescription(), Toast.LENGTH_LONG).show();
+                        final Intent intent = new Intent(mContext,StepsActivity.class);
+                        mContext.startActivity(intent);
+                    }
+                });
             default:
                 break;
 
         }
     }
 
-    private void configureIngredientHolder(IngredientHolder ingredientHolder, int position){
+    private void buildIngredientHolder(IngredientHolder ingredientHolder, int position){
         Ingredient ingredient = (Ingredient) mDetailList.get(position);
         if (ingredient != null){
             ingredientHolder.getQuantity().setText(ingredient.quantity);
@@ -91,17 +103,17 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    private void configureStepHolder(StepHolder stepHolder, int position){
+    private void buildStepHolder(StepHolder stepHolder, int position){
         Step step = (Step) mDetailList.get(position);
         stepHolder.getShortDescription().setText(step.shortDes);
     }
 
-    private void configureSubheaderHolder(SubheaderHolder subheaderHolder, int position){
+    private void buildSubheaderHolder(SubheaderHolder subheaderHolder, int position){
         String subheader = (String) mDetailList.get(position);
         subheaderHolder.getSubheader().setText(subheader);
     }
 
-    private void configureHeaderHolder(HeaderHolder headerHolder, int position){
+    private void buildHeaderHolder(HeaderHolder headerHolder, int position){
         String recipename = (String) mDetailList.get(position);
         headerHolder.getRecipeName().setText(recipename);
         headerHolder.getRecipeImage().setImageResource(R.drawable.default_recipe_back);
