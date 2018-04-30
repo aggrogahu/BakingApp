@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.ImageView;
 
 import java.util.List;
 
@@ -52,7 +52,7 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 viewHolder = new SubheaderHolder(subheaderView);
                 break;
             case STEP:
-                View stepView = inflater.inflate(R.layout.detail_step,parent,false);
+                View stepView = inflater.inflate(R.layout.detail_step_item,parent,false);
                 viewHolder = new StepHolder(stepView);
             default:
                 break;
@@ -114,8 +114,8 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     private void buildHeaderHolder(HeaderHolder headerHolder, int position){
-        String recipename = (String) mDetailList.get(position);
-        headerHolder.getRecipeName().setText(recipename);
+        String recipeName = (String) mDetailList.get(position);
+        headerHolder.getRecipeName().setText(recipeName);
         headerHolder.getRecipeImage().setImageResource(R.drawable.default_recipe_back);
     }
 

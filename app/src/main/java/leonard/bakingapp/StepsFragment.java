@@ -37,4 +37,8 @@ public class StepsFragment extends Fragment {
     public void setStepList(List<Integer> steps){ mStepList = steps;}
 
     public void setListIndex(int index){mListIndex = index;}
+
+//    private void initializeMediaSession(){}
+//
+//    private void initializeExoPlayer(){}
 }

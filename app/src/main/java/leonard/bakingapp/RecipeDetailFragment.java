@@ -75,8 +75,8 @@ public class RecipeDetailFragment extends Fragment {
                 null,
                 null));
         detailsList.add(new Step(
-                "Recipe Introduction",
-                "Recipe Introduction",
+                "Starting prep",
+                "1. Preheat the oven to 350°F. Butter a 9\" deep dish pie pan.",
                 null,
                 null));
         return detailsList;

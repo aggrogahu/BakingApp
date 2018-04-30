@@ -22,7 +22,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
-// TODO Initialize the step detail with first step
+// TODO Initialize the step detail with first step if two pane
 //        RecyclerView mRecyclerView = findViewById(R.id.recipe_detail_recycler_view);
 //        mRecyclerView.setHasFixedSize(true);
 //        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
