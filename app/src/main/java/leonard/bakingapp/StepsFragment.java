@@ -7,16 +7,20 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
+import leonard.bakingapp.data.Step;
+
 public class StepsFragment extends Fragment {
 
-    public static final String STEPS_LIST = "steps_list";
-    public static final String LIST_INDEX = "list_index";
+    public static final String STEP = "step";
+//    public static final String LIST_INDEX = "list_index";
+    public static final String ARG_OBJECT = "object";
 
-    private List<Integer> mStepList;
-    private int mListIndex;
+//    private List<Integer> mStepList;
+//    private int mListIndex;
 
     public StepsFragment(){
     }
@@ -31,12 +35,20 @@ public class StepsFragment extends Fragment {
 
         //TODO set on click listener
 
-        return inflater.inflate(R.layout.fragment_recipe_steps,container,false);
+        View rootView = inflater.inflate(R.layout.fragment_recipe_steps,container,false);
+        Bundle args = getArguments();
+        Step mStep = args.getParcelable(STEP);
+
+        ((TextView) rootView.findViewById(R.id.text1)).setText(
+                "Step " +
+                Integer.toString(args.getInt(ARG_OBJECT)) +
+        " " + mStep.shortDes);
+        return rootView;
     }
 
-    public void setStepList(List<Integer> steps){ mStepList = steps;}
-
-    public void setListIndex(int index){mListIndex = index;}
+//    public void setStepList(List<Integer> steps){ mStepList = steps;}
+//
+//    public void setListIndex(int index){mListIndex = index;}
 
 //    private void initializeMediaSession(){}
 //

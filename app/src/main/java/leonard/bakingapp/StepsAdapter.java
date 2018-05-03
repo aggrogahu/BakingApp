@@ -21,7 +21,6 @@ public class StepsAdapter extends RecyclerView.Adapter {
         mContext = context;
     }
 
-    //TODO(1) implement Swipe Views
 
     @NonNull
     @Override
@@ -29,7 +28,7 @@ public class StepsAdapter extends RecyclerView.Adapter {
         RecyclerView.ViewHolder viewHolder = null;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        //TODO monster switch statement
+        //TODO monster switch statement to accommodate all types of media
 
         return viewHolder;
     }

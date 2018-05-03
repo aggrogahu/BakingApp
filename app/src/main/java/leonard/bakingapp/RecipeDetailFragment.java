@@ -55,12 +55,11 @@ public class RecipeDetailFragment extends Fragment {
 
         List<Object> mDetailList = getDummyArrayList();
 
-        mRecyclerView.setAdapter(new RecipeDetailAdapter(mDetailList, getContext()));
+        mRecyclerView.setAdapter(new RecipeDetailAdapter(mDetailList, getContext(), mCallback));
 
         return rootView;
     }
 
-    //    TODO build recipe detail screen using recyclerview and different view types
     private ArrayList<Object> getDummyArrayList(){
         ArrayList<Object> detailsList = new ArrayList<>();
         detailsList.add("Nutella Pie");

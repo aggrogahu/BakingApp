@@ -1,10 +1,12 @@
 package leonard.bakingapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +15,7 @@ import leonard.bakingapp.data.Ingredient;
 import leonard.bakingapp.data.Step;
 
 public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailFragment.OnStepClickListener{
+    private static final String TAG = RecipeDetailActivity.class.getSimpleName();
 //    private RecyclerView.Adapter mAdapter;
 
 
@@ -37,6 +40,12 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
     @Override
     public void onStepSelected(int position) {
-//TODO launch/display step detail
+//TODO launch step detail; display step detail fragment if two pane layout
+        final Intent intent = new Intent(this,StepsActivity.class);
+        Bundle b = new Bundle();
+        //TODO figure out correct offset programmatically
+        b.putInt("selectedStep", position-6);
+        intent.putExtras(b);
+        this.startActivity(intent);
     }
 }

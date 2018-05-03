@@ -26,10 +26,16 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private final int INGREDIENT = 2;
     private final int STEP = 3;
     Context mContext;
+    RecipeDetailFragment.OnStepClickListener mCallback;
+//
+//    public interface OnStepClickListener{
+//        void onStepSelected(int position);
+//    }
 
-    public RecipeDetailAdapter(List<Object> objects, Context context){
+    public RecipeDetailAdapter(List<Object> objects, Context context, RecipeDetailFragment.OnStepClickListener listener){
         mDetailList = objects;
         mContext = context;
+        mCallback = listener;
     }
 
     @NonNull
@@ -62,7 +68,7 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
 
         switch (holder.getItemViewType()){
             case INGREDIENT:
@@ -83,10 +89,7 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //TODO launch or display selected step using interface from recipe detail activity
-//                        Toast.makeText(mContext, "Item Clicked: " + ((StepHolder) holder).getStringShortDescription(), Toast.LENGTH_LONG).show();
-                        final Intent intent = new Intent(mContext,StepsActivity.class);
-                        mContext.startActivity(intent);
+                        mCallback.onStepSelected(position);
                     }
                 });
             default:
