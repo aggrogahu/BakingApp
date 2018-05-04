@@ -23,7 +23,7 @@ public class StepsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_detail);
 
-        mStepsPagerAdapter = new StepsPagerAdapter(getSupportFragmentManager(), getDummyStepArrayList());
+        mStepsPagerAdapter = new StepsPagerAdapter(getSupportFragmentManager(), getIntent().<Step>getParcelableArrayListExtra("stepList"));
         mViewPager = findViewById(R.id.step_pager);
         mViewPager.setAdapter(mStepsPagerAdapter);
         TabLayout tabLayout = findViewById(R.id.tick_marks);
@@ -31,13 +31,14 @@ public class StepsActivity extends AppCompatActivity {
         int position = getIntent().getIntExtra("selectedStep", 0);
         Log.d(TAG, "position: " + position);
         mViewPager.setCurrentItem(position);
+
     }
 
-    private List<Step> getDummyStepArrayList(){
+    private List<Step> getStepArrayList(){
         return new ArrayList<Step>(){{
-            add(new Step("Short Desc 01", "description", "URL", null));
-            add(new Step("Short Desc 02", "description", "URL", null));
-            add(new Step("Short Desc 03", "description", "URL", null));
+            add(new Step("Short Desc 01", "description", "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd974_-intro-creampie/-intro-creampie.mp4", null));
+            add(new Step("Short Desc 02", "description", "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd9a6_2-mix-sugar-crackers-creampie/2-mix-sugar-crackers-creampie.mp4", null));
+            add(new Step("Short Desc 03", "description", "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd9a6_2-mix-sugar-crackers-creampie/2-mix-sugar-crackers-creampie.mp4", null));
             add(new Step("Short Desc 04", "description", "URL", null));
         }};
     }

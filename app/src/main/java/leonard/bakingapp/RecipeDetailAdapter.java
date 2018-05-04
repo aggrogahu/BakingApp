@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import leonard.bakingapp.data.HeaderHolder;
@@ -89,7 +91,9 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mCallback.onStepSelected(position);
+                        Step theStep = (Step)mDetailList.get(position);
+                        Log.d(TAG, "theStep: " + theStep.shortDes);
+                        mCallback.onStepSelected(position, mDetailList);
                     }
                 });
             default:

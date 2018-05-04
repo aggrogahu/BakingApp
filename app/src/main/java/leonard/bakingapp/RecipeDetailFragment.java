@@ -22,7 +22,7 @@ public class RecipeDetailFragment extends Fragment {
     OnStepClickListener mCallback;
 
     public interface OnStepClickListener{
-        void onStepSelected(int position);
+        void onStepSelected(int i, List<Object> list);
     }
 
     @Override
@@ -71,12 +71,18 @@ public class RecipeDetailFragment extends Fragment {
         detailsList.add(new Step(
                 "Recipe Introduction",
                 "Recipe Introduction",
-                null,
+                "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd974_-intro-creampie/-intro-creampie.mp4"
+                ,
                 null));
         detailsList.add(new Step(
                 "Starting prep",
                 "1. Preheat the oven to 350°F. Butter a 9\" deep dish pie pan.",
-                null,
+                "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd9a6_2-mix-sugar-crackers-creampie/2-mix-sugar-crackers-creampie.mp4",
+                null));
+        detailsList.add(new Step(
+                "Press shit",
+                "Press it",
+                "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd9cb_4-press-crumbs-in-pie-plate-creampie/4-press-crumbs-in-pie-plate-creampie.mp4",
                 null));
         return detailsList;
     }

@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
     <TextView
+        android:id="@+id/text1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/text1"
-        tools:text="int"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="int" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recipe_step_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="7"/>
+        android:layout_weight="7"
+        app:layout_constraintTop_toBottomOf="@id/text1" />
+
+    <com.google.android.exoplayer2.ui.SimpleExoPlayerView xmlns:android="http://schemas.android.com/apk/res/android"
+
+        android:id="@+id/test_exo"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="H,16:9"
+        app:layout_constraintTop_toBottomOf="@+id/recipe_step_recycler_view">
+
+    </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
     <!--<android.support.constraint.ConstraintLayout-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="0dp"-->
@@ -50,4 +65,4 @@
             <!--app:layout_constraintTop_toTopOf="parent" />-->
     <!--</android.support.constraint.ConstraintLayout>-->
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
