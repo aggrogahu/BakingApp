@@ -37,15 +37,15 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
     @Override
     public void onStepSelected(int position, List<Object> list) {
-//TODO launch step detail; display step detail fragment if two pane layout
+
+        //TODO launch step detail; display step detail fragment if two pane layout
         final Intent intent = new Intent(this,StepsActivity.class);
         Bundle b = new Bundle();
         //TODO figure out correct offset programmatically
         int offset = 6;
         b.putInt("selectedStep", position-offset);
-//        String vidurl = step.videoURL;
-//        Log.d(TAG, "vidurl: " + vidurl);
-//        b.putString("URL", vidurl);
+
+        //build step array from object list
         ArrayList<Step> stepList = new ArrayList<Step>();
         for (int i = 6; i < list.size(); i++) {
             stepList.add((Step)list.get(i));

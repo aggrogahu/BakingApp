@@ -91,8 +91,6 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Step theStep = (Step)mDetailList.get(position);
-                        Log.d(TAG, "theStep: " + theStep.shortDes);
                         mCallback.onStepSelected(position, mDetailList);
                     }
                 });

@@ -23,7 +23,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".RecipeActivity"/>
         </activity>
-        <activity android:name=".StepsActivity"/>
+        <activity android:name=".StepsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".RecipeDetailActivity"/>
+        </activity>
     </application>
 
 </manifest>

@@ -5,31 +5,30 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-    <TextView
-        android:id="@+id/text1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="int" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recipe_step_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="7"
-        app:layout_constraintTop_toBottomOf="@id/text1" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.exoplayer2.ui.SimpleExoPlayerView xmlns:android="http://schemas.android.com/apk/res/android"
+    <!--<com.google.android.exoplayer2.ui.SimpleExoPlayerView xmlns:android="http://schemas.android.com/apk/res/android"-->
 
-        android:id="@+id/test_exo"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="H,16:9"
-        app:layout_constraintTop_toBottomOf="@+id/recipe_step_recycler_view">
+        <!--android:id="@+id/test_exo"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--app:layout_constraintDimensionRatio="H,16:9"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/recipe_step_recycler_view"/>-->
 
-    </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
+    <!--<TextView-->
+        <!--android:id="@+id/step_dummy_text"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--tools:text="test"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/test_exo" />-->
+
     <!--<android.support.constraint.ConstraintLayout-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="0dp"-->

@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +34,7 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import leonard.bakingapp.data.Step;
@@ -61,21 +64,43 @@ public class StepsFragment extends Fragment implements ExoPlayer.EventListener{
 
         //TODO Inflate layout and set views accordingly (send dummy information to recyclerView adapter)
 
-        //TODO set on click listener
+
 
         View rootView = inflater.inflate(R.layout.fragment_recipe_steps,container,false);
-        Bundle args = getArguments();
-        Step mStep = args.getParcelable(STEP);
 
-//        ((TextView) rootView.findViewById(R.id.text1)).setText(
-//                "Step " +
-//                Integer.toString(args.getInt(ARG_OBJECT)) +
-//        " " + mStep.shortDes);
-        mPlayerView = rootView.findViewById(R.id.test_exo);
-        initializeMediaSession();
-        String url = mStep.videoURL;
-        Log.d(TAG, "url: " + url);
-        initializePlayer(Uri.parse(url));
+        RecyclerView mRecyclerView = rootView.findViewById(R.id.recipe_step_recycler_view);
+
+        mRecyclerView.setHasFixedSize(true);
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+
+        Bundle args = getArguments();
+        Step mStep = null;
+        if (args != null) {
+            mStep = args.getParcelable(STEP);
+        }
+
+        List<String> stepObs = new ArrayList<>();
+//        stepObs.add(mStep.videoURL);
+        stepObs.add(mStep.description);
+
+
+        mRecyclerView.setAdapter(new StepsAdapter(stepObs,getContext()));
+
+////        ((TextView) rootView.findViewById(R.id.step_dummy_text)).setText(
+////                "Step " +
+////                Integer.toString(args.getInt(ARG_OBJECT)) +
+////        " " + mStep.shortDes);
+////        getActivity().setTitle(mStep.shortDes);
+//        mPlayerView = rootView.findViewById(R.id.test_exo);
+//        initializeMediaSession();
+//        String url = mStep.videoURL;
+//        //TODO pass a cached data source
+//        initializePlayer(Uri.parse(url));
+
+        //TODO? set on click listener
         return rootView;
     }
 
@@ -176,13 +201,13 @@ public class StepsFragment extends Fragment implements ExoPlayer.EventListener{
     public void onDestroy() {
         super.onDestroy();
         releasePlayer();
-        mMediaSession.setActive(false);
+//        mMediaSession.setActive(false);
     }
 
     private void releasePlayer() {
-        mExoPlayer.stop();
-        mExoPlayer.release();
-        mExoPlayer = null;
+//        mExoPlayer.stop();
+//        mExoPlayer.release();
+//        mExoPlayer = null;
     }
 
     private class MySessionCallback extends MediaSessionCompat.Callback {

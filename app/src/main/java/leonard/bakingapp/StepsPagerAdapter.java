@@ -3,6 +3,7 @@ package leonard.bakingapp;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -15,6 +16,7 @@ import leonard.bakingapp.data.Step;
 class StepsPagerAdapter extends FragmentStatePagerAdapter{
     List<Step> mStepList;
 
+    //TODO save state of fragments
     public StepsPagerAdapter(FragmentManager fm, List<Step> stepList) {
         super(fm);
         mStepList = stepList;
@@ -34,4 +36,5 @@ class StepsPagerAdapter extends FragmentStatePagerAdapter{
     public int getCount() {
         return mStepList.size();
     }
+
 }

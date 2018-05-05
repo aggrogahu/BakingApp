@@ -22,7 +22,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.CardViewHo
             mRecipeList = recipes;
         }
         else {
-            //TODO remove dummy array
+            //TODO remove dummy recipe array
             mRecipeList = new ArrayList<>();
             mRecipeList.add("Nutella Pie");
             mRecipeList.add("Brownies");

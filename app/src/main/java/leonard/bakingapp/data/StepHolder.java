@@ -22,7 +22,7 @@ public class StepHolder extends RecyclerView.ViewHolder {
 
     public String getStringShortDescription(){ return shortDescription;}
 
-    public void setShortDescription(TextView textView){
-        mShortDescription = textView;
+    public void setShortDescription(String shortDesc){
+        mShortDescription.setText(shortDesc);
     }
 }
