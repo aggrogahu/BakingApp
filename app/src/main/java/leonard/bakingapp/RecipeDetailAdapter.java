@@ -1,16 +1,12 @@
 package leonard.bakingapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import leonard.bakingapp.data.HeaderHolder;
@@ -75,19 +71,19 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         switch (holder.getItemViewType()){
             case INGREDIENT:
                 IngredientHolder ingredientHolder = (IngredientHolder) holder;
-                buildIngredientHolder(ingredientHolder,position);
+                bindIngredientHolder(ingredientHolder,position);
                 break;
             case HEADER:
                 HeaderHolder headerHolder = (HeaderHolder) holder;
-                buildHeaderHolder(headerHolder,position);
+                bindHeaderHolder(headerHolder,position);
                 break;
             case SUBHEADER:
                 SubheaderHolder subheaderHolder = (SubheaderHolder) holder;
-                buildSubheaderHolder(subheaderHolder,position);
+                bindSubheaderHolder(subheaderHolder,position);
                 break;
             case STEP:
                 StepHolder stepHolder = (StepHolder) holder;
-                buildStepHolder(stepHolder,position);
+                bindStepHolder(stepHolder,position);
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -100,7 +96,7 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    private void buildIngredientHolder(IngredientHolder ingredientHolder, int position){
+    private void bindIngredientHolder(IngredientHolder ingredientHolder, int position){
         Ingredient ingredient = (Ingredient) mDetailList.get(position);
         if (ingredient != null){
             ingredientHolder.getQuantity().setText(ingredient.quantity);
@@ -108,17 +104,17 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    private void buildStepHolder(StepHolder stepHolder, int position){
+    private void bindStepHolder(StepHolder stepHolder, int position){
         Step step = (Step) mDetailList.get(position);
         stepHolder.getShortDescription().setText(step.shortDes);
     }
 
-    private void buildSubheaderHolder(SubheaderHolder subheaderHolder, int position){
+    private void bindSubheaderHolder(SubheaderHolder subheaderHolder, int position){
         String subheader = (String) mDetailList.get(position);
         subheaderHolder.getSubheader().setText(subheader);
     }
 
-    private void buildHeaderHolder(HeaderHolder headerHolder, int position){
+    private void bindHeaderHolder(HeaderHolder headerHolder, int position){
         String recipeName = (String) mDetailList.get(position);
         headerHolder.getRecipeName().setText(recipeName);
         headerHolder.getRecipeImage().setImageResource(R.drawable.default_recipe_back);

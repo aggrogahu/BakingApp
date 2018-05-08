@@ -6,7 +6,7 @@
 <app:com.google.android.exoplayer2.ui.SimpleExoPlayerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    android:id="@+id/step_exoPlayer"
+    android:id="@+id/step_exoPlayerView"
     android:layout_width="match_parent"
     android:layout_height="0dp"
     app:layout_constraintDimensionRatio="H,16:9" />

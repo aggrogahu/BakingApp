@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -49,6 +48,7 @@ public class StepsFragment extends Fragment implements ExoPlayer.EventListener{
     private SimpleExoPlayerView mPlayerView;
     private MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
+    private Step mStep;
 
 //    private List<Integer> mStepList;
 //    private int mListIndex;
@@ -63,31 +63,33 @@ public class StepsFragment extends Fragment implements ExoPlayer.EventListener{
         //TODO StepFragment load saved instance
 
         //TODO Inflate layout and set views accordingly (send dummy information to recyclerView adapter)
-
+        Log.d(TAG, "onCreateView");
 
 
         View rootView = inflater.inflate(R.layout.fragment_recipe_steps,container,false);
 
         RecyclerView mRecyclerView = rootView.findViewById(R.id.recipe_step_recycler_view);
-
         mRecyclerView.setHasFixedSize(true);
-
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+//        mPlayerView
+
 
         Bundle args = getArguments();
-        Step mStep = null;
+        mStep = null;
         if (args != null) {
             mStep = args.getParcelable(STEP);
         }
 
         List<String> stepObs = new ArrayList<>();
-//        stepObs.add(mStep.videoURL);
+        stepObs.add(mStep.videoURL);
         stepObs.add(mStep.description);
 
 
         mRecyclerView.setAdapter(new StepsAdapter(stepObs,getContext()));
+
+        mPlayerView = rootView.findViewById(R.id.step_exoPlayerView);
 
 ////        ((TextView) rootView.findViewById(R.id.step_dummy_text)).setText(
 ////                "Step " +
@@ -95,10 +97,10 @@ public class StepsFragment extends Fragment implements ExoPlayer.EventListener{
 ////        " " + mStep.shortDes);
 ////        getActivity().setTitle(mStep.shortDes);
 //        mPlayerView = rootView.findViewById(R.id.test_exo);
-//        initializeMediaSession();
-//        String url = mStep.videoURL;
+        initializeMediaSession();
+        String url = mStep.videoURL;
 //        //TODO pass a cached data source
-//        initializePlayer(Uri.parse(url));
+        initializePlayer(Uri.parse(url));
 
         //TODO? set on click listener
         return rootView;
@@ -108,7 +110,7 @@ public class StepsFragment extends Fragment implements ExoPlayer.EventListener{
 //
 //    public void setListIndex(int index){mListIndex = index;}
 
-    private void initializeMediaSession(){
+    public void initializeMediaSession(){
         // Create a MediaSessionCompat.
         mMediaSession = new MediaSessionCompat(this.getContext(), TAG);
 
@@ -138,26 +140,30 @@ public class StepsFragment extends Fragment implements ExoPlayer.EventListener{
         mMediaSession.setActive(true);
     }
 
-    private void initializePlayer(Uri mediaUri) {
-        if (mExoPlayer == null) {
-            Context context = this.getContext();
-            // Create an instance of the ExoPlayer.
-            TrackSelector trackSelector = new DefaultTrackSelector();
-            LoadControl loadControl = new DefaultLoadControl();
-            mExoPlayer = ExoPlayerFactory.newSimpleInstance(context, trackSelector, loadControl);
-            mPlayerView.setPlayer(mExoPlayer);
+    public void initializePlayer(Uri uri) {
+//        if (exoPlayer == null) {
+//        mPlayerView = getView().findViewById(R.id.step_exoPlayer);
+        Context context = this.getContext();
+//        mExoPlayer = exoPlayer;
+        // Create an instance of the ExoPlayer.
+        TrackSelector trackSelector = new DefaultTrackSelector();
+        LoadControl loadControl = new DefaultLoadControl();
+        mExoPlayer = ExoPlayerFactory.newSimpleInstance(context, trackSelector, loadControl);
+        mPlayerView.setPlayer(mExoPlayer);
 
-            // Set the ExoPlayer.EventListener to this activity.
-            mExoPlayer.addListener(this);
+        // Set the ExoPlayer.EventListener to this activity.
+        mExoPlayer.addListener(this);
 
-            // Prepare the MediaSource.
-            String userAgent = Util.getUserAgent(context, "ClassicalMusicQuiz");
-            MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
-                    context, userAgent), new DefaultExtractorsFactory(), null, null);
-            mExoPlayer.prepare(mediaSource);
-            mExoPlayer.setPlayWhenReady(false);
-        }
+        // Prepare the MediaSource.
+        String userAgent = Util.getUserAgent(context, "Derp");
+//        Uri mediaUri = Uri.parse(mStep.videoURL);
+        MediaSource mediaSource = new ExtractorMediaSource(uri, new DefaultDataSourceFactory(
+                context, userAgent), new DefaultExtractorsFactory(), null, null);
+        mExoPlayer.prepare(mediaSource);
+        mExoPlayer.setPlayWhenReady(false);
+//        }
     }
+
 
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest) {
@@ -213,7 +219,7 @@ public class StepsFragment extends Fragment implements ExoPlayer.EventListener{
     private class MySessionCallback extends MediaSessionCompat.Callback {
         @Override
         public void onPlay() {
-            mExoPlayer.setPlayWhenReady(false);
+            mExoPlayer.setPlayWhenReady(true);
         }
 
         @Override

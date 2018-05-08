@@ -7,22 +7,22 @@ import android.widget.TextView;
 import leonard.bakingapp.R;
 
 public class StepHolder extends RecyclerView.ViewHolder {
-    private TextView mShortDescription;
+    private TextView shortDescriptionTextView;
     private String shortDescription;
 
     public StepHolder(View itemView) {
         super(itemView);
-        mShortDescription = itemView.findViewById(R.id.step_text_view);
-        shortDescription = mShortDescription.getText().toString();
+        shortDescriptionTextView = itemView.findViewById(R.id.step_text_view);
+        shortDescription = shortDescriptionTextView.getText().toString();
     }
 
     public TextView getShortDescription() {
-        return mShortDescription;
+        return shortDescriptionTextView;
     }
 
     public String getStringShortDescription(){ return shortDescription;}
 
     public void setShortDescription(String shortDesc){
-        mShortDescription.setText(shortDesc);
+        shortDescriptionTextView.setText(shortDesc);
     }
 }

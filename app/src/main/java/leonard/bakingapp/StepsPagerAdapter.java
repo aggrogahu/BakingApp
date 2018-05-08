@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import leonard.bakingapp.data.Step;
 
 class StepsPagerAdapter extends FragmentStatePagerAdapter{
     List<Step> mStepList;
+//    private Fragment mCurrentFragment;
 
     //TODO save state of fragments
     public StepsPagerAdapter(FragmentManager fm, List<Step> stepList) {
@@ -31,6 +33,18 @@ class StepsPagerAdapter extends FragmentStatePagerAdapter{
         fragment.setArguments(args);
         return fragment;
     }
+
+//    public Fragment getCurrentFragment() {
+//        return mCurrentFragment;
+//    }
+//    //...
+//    @Override
+//    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+////        if (getCurrentFragment() != object) {
+//            mCurrentFragment = ((Fragment) object);
+////        }
+//        super.setPrimaryItem(container, position, object);
+//    }
 
     @Override
     public int getCount() {

@@ -9,6 +9,14 @@ import android.support.design.widget.TabLayout;
 import android.util.Log;
 import android.view.View;
 
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +27,8 @@ public class StepsActivity extends AppCompatActivity {
     //TODO might have to duplicate this code in recipe detail activity for two pane
     StepsPagerAdapter mStepsPagerAdapter;
     ViewPager mViewPager;
+    private SimpleExoPlayer mSimpleExoPlayer;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,7 +44,12 @@ public class StepsActivity extends AppCompatActivity {
 //
 //        }
 
-        //setup ViewPager adapter and tabs/tick marks
+        //initialize exoplayer
+        TrackSelector trackSelector = new DefaultTrackSelector();
+        LoadControl loadControl = new DefaultLoadControl();
+        mSimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector, loadControl);
+
+        //setup ViewPager adapter and tick marks (tabLayout)
         mStepsPagerAdapter = new StepsPagerAdapter(getSupportFragmentManager(), getIntent().<Step>getParcelableArrayListExtra("stepList"));
         mViewPager = findViewById(R.id.step_pager);
         mViewPager.setAdapter(mStepsPagerAdapter);
@@ -54,6 +69,20 @@ public class StepsActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
+                //TODO(1) initialize and set exoplayer to exoplayer view
+//                StepsFragment stepsFragment = (StepsFragment)mStepsPagerAdapter.getItem(position);
+//                stepsFragment.;
+//                stepsFragment.initializePlayer(mSimpleExoPlayer);
+
+//                String tag = "android:switcher:" + mViewPager.getId() + ":" + position;
+//                Log.d(TAG, "tag: " + tag);
+//                StepsFragment stepsFragment = (StepsFragment) getSupportFragmentManager().findFragmentByTag(tag);
+//                SimpleExoPlayerView exoPlayerView = stepsFragment.getView().findViewById(R.id.step_exoPlayerView);
+//                StepsFragment stepsFragment = (StepsFragment) mStepsPagerAdapter.getCurrentFragment();
+//                SimpleExoPlayerView exoPlayerView = stepsFragment.getView().findViewById(R.id.step_exoPlayerView);
+//                stepsFragment.initializeMediaSession();
+//                stepsFragment.initializePlayer(mSimpleExoPlayer, exoPlayerView);
+
                 setTitle(stepList.get(position).shortDes);
             }
 
