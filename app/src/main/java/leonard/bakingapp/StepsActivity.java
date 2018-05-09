@@ -27,7 +27,7 @@ public class StepsActivity extends AppCompatActivity {
     //TODO might have to duplicate this code in recipe detail activity for two pane
     StepsPagerAdapter mStepsPagerAdapter;
     ViewPager mViewPager;
-    private SimpleExoPlayer mSimpleExoPlayer;
+//    private SimpleExoPlayer mSimpleExoPlayer;
 
 
     @Override
@@ -44,10 +44,10 @@ public class StepsActivity extends AppCompatActivity {
 //
 //        }
 
-        //initialize exoplayer
-        TrackSelector trackSelector = new DefaultTrackSelector();
-        LoadControl loadControl = new DefaultLoadControl();
-        mSimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector, loadControl);
+//        //initialize exoPlayer
+//        TrackSelector trackSelector = new DefaultTrackSelector();
+//        LoadControl loadControl = new DefaultLoadControl();
+//        mSimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector, loadControl);
 
         //setup ViewPager adapter and tick marks (tabLayout)
         mStepsPagerAdapter = new StepsPagerAdapter(getSupportFragmentManager(), getIntent().<Step>getParcelableArrayListExtra("stepList"));
@@ -59,8 +59,12 @@ public class StepsActivity extends AppCompatActivity {
         //begin with the selected step
         int position = getIntent().getIntExtra("selectedStep", 0);
         mViewPager.setCurrentItem(position);
+
+        //set title
         final List<Step> stepList = getIntent().getParcelableArrayListExtra("stepList");
         setTitle(stepList.get(position).shortDes);
+
+        //set listener
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -69,7 +73,9 @@ public class StepsActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                //TODO(1) initialize and set exoplayer to exoplayer view
+                //TODO initialize and set exoplayer to exoplayer view. Use only one instance of exoplayer to increase performance
+                Log.d(TAG, "onPageSelected: change to " + position);
+
 //                StepsFragment stepsFragment = (StepsFragment)mStepsPagerAdapter.getItem(position);
 //                stepsFragment.;
 //                stepsFragment.initializePlayer(mSimpleExoPlayer);
@@ -95,6 +101,18 @@ public class StepsActivity extends AppCompatActivity {
         //set
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy");
+    }
+
+    //    private void attachPlayer() {
+//        Log.d(TAG, "attachPlayer");
+////        StepsFragment stepsFragment = (StepsFragment) mStepsPagerAdapter.getCurrentFragment();
+////        stepsFragment.getPlayerView();
+//    }
 
 //    private List<Step> getStepArrayList(){
 //        return new ArrayList<Step>(){{

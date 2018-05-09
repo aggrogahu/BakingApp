@@ -29,4 +29,8 @@ public class VideoViewHolder extends RecyclerView.ViewHolder {
     public void setMediaSource(MediaSource mMediaSource) {
         this.mMediaSource = mMediaSource;
     }
+
+    public SimpleExoPlayerView getPlayerView() {
+        return mPlayerView;
+    }
 }

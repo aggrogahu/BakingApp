@@ -9,10 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
@@ -45,7 +50,6 @@ public class StepsAdapter extends RecyclerView.Adapter {
         RecyclerView.ViewHolder viewHolder = null;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        //TODO(1) monster switch statement to accommodate all types of media
         switch (viewType){
 //            case SHORT_DESCRIPTION:
 //                break;
@@ -60,6 +64,7 @@ public class StepsAdapter extends RecyclerView.Adapter {
                 viewHolder = new VideoViewHolder(videoView);
                 break;
             case IMAGE:
+                //TODO create image holder
             default:
                 break;
         }
@@ -75,6 +80,7 @@ public class StepsAdapter extends RecyclerView.Adapter {
                 break;
             case VIDEO:
                 VideoViewHolder videoViewHolder = (VideoViewHolder) holder;
+                bindVideoHolder(videoViewHolder,position);
             default:
                 break;
         }
@@ -85,14 +91,22 @@ public class StepsAdapter extends RecyclerView.Adapter {
         stepHolder.setShortDescription(shortDes);
     }
     private void bindVideoHolder(VideoViewHolder videoViewHolder,int position){
+        // Create an instance of the ExoPlayer.
+        TrackSelector trackSelector = new DefaultTrackSelector();
+        LoadControl loadControl = new DefaultLoadControl();
+        SimpleExoPlayer mExoPlayer = ExoPlayerFactory.newSimpleInstance(mContext, trackSelector, loadControl);
+        videoViewHolder.getPlayerView().setPlayer(mExoPlayer);
+
+        // Set the ExoPlayer.EventListener to this activity.
+//        mExoPlayer.addListener(this);
+
         // Prepare the MediaSource.
         String userAgent = Util.getUserAgent(mContext, "Derp");
-        String videoUrl = mStepObs.get(position);
-        Log.d(TAG, "videoUrl: " + videoUrl);
-        Uri mediaUri = Uri.parse(videoUrl);
+        Uri mediaUri = Uri.parse(mStepObs.get(position).toString());
         MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                 mContext, userAgent), new DefaultExtractorsFactory(), null, null);
-        videoViewHolder.setMediaSource(mediaSource);
+        mExoPlayer.prepare(mediaSource);
+        mExoPlayer.setPlayWhenReady(false);
     }
 
 
@@ -105,17 +119,15 @@ public class StepsAdapter extends RecyclerView.Adapter {
     public int getItemViewType(int position) {
         String item = mStepObs.get(position);
         if(item.contains(".mp4")){
-//            Log.d(TAG, "getItemViewType: Video detected");
             return VIDEO;
         } else if(item.contains(".jpeg") || item.contains(".jpg") || item.contains(".png")){
             return IMAGE;
         } else {
-//            Log.d(TAG, "getItemViewType: Text detected");
             return DESCRIPTION;
         }
     }
 
     private void initializeMediaSession(){}
 
-    private void initializeExoPlayer(){}
+    private void initializeExoPlayer(){ }
 }
