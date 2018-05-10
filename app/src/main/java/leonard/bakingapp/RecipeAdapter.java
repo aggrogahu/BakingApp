@@ -27,7 +27,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.CardViewHo
             mRecipeList.add("Nutella Pie");
             mRecipeList.add("Brownies");
             mRecipeList.add("Yellow Cake");
-            mRecipeList.add("Cheesecake");
+//            mRecipeList.add("Cheesecake");
         }
         mContext = context;
     }

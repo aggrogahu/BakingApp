@@ -223,8 +223,13 @@ public class StepsFragment extends Fragment
 
     private void releasePlayer() {
         Log.d(TAG, "releasePlayer");
-        VideoViewHolder videoViewHolder = (VideoViewHolder) mRecyclerView.getChildViewHolder(mRecyclerView.getChildAt(0));
-        videoViewHolder.getPlayerView().getPlayer().release();
+        RecyclerView.ViewHolder viewHolder = mRecyclerView.getChildViewHolder(mRecyclerView.getChildAt(0));
+        if (viewHolder instanceof VideoViewHolder){
+            VideoViewHolder videoViewHolder = (VideoViewHolder) viewHolder;
+            ExoPlayer exoPlayer = videoViewHolder.getPlayerView().getPlayer();
+            exoPlayer.stop();
+            exoPlayer.release();
+        }
 //
 //        mExoPlayer.stop();
 //        mExoPlayer.release();
