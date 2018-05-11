@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import leonard.bakingapp.data.Recipe;
+import leonard.bakingapp.classes.Recipe;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.CardViewHolder> {
 //    private List<String> mRecipeList;
@@ -69,6 +69,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.CardViewHo
         holder.mRecipeName.setText(mRecipes.get(position).name);
 
         final Intent intent = new Intent(mContext, RecipeDetailActivity.class);
+        intent.putExtra("recipe", mRecipes.get(position));
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

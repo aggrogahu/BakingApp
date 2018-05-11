@@ -23,8 +23,8 @@ import com.google.android.exoplayer2.util.Util;
 
 import java.util.List;
 
-import leonard.bakingapp.data.StepHolder;
-import leonard.bakingapp.data.VideoViewHolder;
+import leonard.bakingapp.classes.viewholders.StepHolder;
+import leonard.bakingapp.classes.viewholders.VideoViewHolder;
 
 public class StepsAdapter extends RecyclerView.Adapter {
     private final String TAG = StepsAdapter.class.getSimpleName();

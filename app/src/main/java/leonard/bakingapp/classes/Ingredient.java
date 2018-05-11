@@ -1,20 +1,29 @@
-package leonard.bakingapp.data;
+package leonard.bakingapp.classes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Ingredient implements Parcelable {
     public String quantity;
+    public String measure;
     public String ingredient;
 
-    public Ingredient(String quantity, String ingredient){
-        this.quantity = quantity;
-        this.ingredient = ingredient;
+    protected Ingredient(Parcel in) {
+        quantity = in.readString();
+        measure = in.readString();
+        ingredient = in.readString();
     }
 
-    private Ingredient(Parcel in) {
-        quantity = in.readString();
-        ingredient = in.readString();
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(quantity);
+        dest.writeString(measure);
+        dest.writeString(ingredient);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<Ingredient> CREATOR = new Creator<Ingredient>() {
@@ -28,15 +37,4 @@ public class Ingredient implements Parcelable {
             return new Ingredient[size];
         }
     };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(quantity);
-        dest.writeString(ingredient);
-    }
 }

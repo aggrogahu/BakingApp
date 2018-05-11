@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -29,14 +30,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import leonard.bakingapp.data.Recipe;
+import leonard.bakingapp.classes.Recipe;
 
 public class RecipeActivity extends AppCompatActivity {
     private String TAG = RecipeActivity.class.getSimpleName();
     private RecyclerView mRecyclerView;
     private RecipeAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private List<Recipe> mRecipeArray;
+    private ArrayList<Recipe> mRecipeArray;
+
+    private static final String RECIPE_LIST = "recipeListKey";
 //    private String recipeJsonStr;
 
 
@@ -52,7 +55,9 @@ public class RecipeActivity extends AppCompatActivity {
 
         //TODO change to grid in case of wide/tablet screen size
         int orientation = getResources().getConfiguration().orientation;
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        float width = displayMetrics.widthPixels / displayMetrics.density;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE || width > 600) {
             mLayoutManager = new GridLayoutManager(this, 2);
         } else {
             mLayoutManager = new LinearLayoutManager(this);
@@ -76,12 +81,19 @@ public class RecipeActivity extends AppCompatActivity {
 //        mRecipeArray.add("Brownies");
 //        mRecipeArray.add("Yellow Cake");
 //        mRecipeArray.add("Cheesecake");
-
         mAdapter = new RecipeAdapter(mRecipeArray,this);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
-        FetchRecipesTask recipesTask = new FetchRecipesTask();
-        recipesTask.execute();
+
+        if (savedInstanceState == null){
+            Log.d(TAG, "onCreate: new array");
+            FetchRecipesTask recipesTask = new FetchRecipesTask();
+            recipesTask.execute();
+        } else {
+            Log.d(TAG, "onCreate: restoring!!!");
+            updateRecipeCards(savedInstanceState.<Recipe>getParcelableArrayList(RECIPE_LIST));
+        }
+
 
     }
 
@@ -217,5 +229,9 @@ public class RecipeActivity extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
     }
 
-
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(RECIPE_LIST, mRecipeArray);
+    }
 }

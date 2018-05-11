@@ -1,9 +1,7 @@
-package leonard.bakingapp.data;
+package leonard.bakingapp.classes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import org.json.JSONObject;
 
 public class Recipe implements Parcelable {
     public int id;

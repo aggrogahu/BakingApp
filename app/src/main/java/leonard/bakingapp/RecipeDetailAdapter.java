@@ -9,12 +9,13 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import leonard.bakingapp.data.HeaderHolder;
-import leonard.bakingapp.data.Ingredient;
-import leonard.bakingapp.data.IngredientHolder;
-import leonard.bakingapp.data.Step;
-import leonard.bakingapp.data.StepHolder;
-import leonard.bakingapp.data.SubheaderHolder;
+import leonard.bakingapp.classes.viewholders.HeaderHolder;
+import leonard.bakingapp.classes.Ingredient;
+import leonard.bakingapp.classes.viewholders.IngredientHolder;
+import leonard.bakingapp.classes.Recipe;
+import leonard.bakingapp.classes.Step;
+import leonard.bakingapp.classes.viewholders.StepHolder;
+import leonard.bakingapp.classes.viewholders.SubheaderHolder;
 
 public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private String TAG = RecipeDetailAdapter.class.getSimpleName();
@@ -23,6 +24,7 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private final int SUBHEADER = 1;
     private final int INGREDIENT = 2;
     private final int STEP = 3;
+    private Recipe mRecipe;
     Context mContext;
     RecipeDetailFragment.OnStepClickListener mCallback;
 //
@@ -30,10 +32,11 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //        void onStepSelected(int position);
 //    }
 
-    public RecipeDetailAdapter(List<Object> objects, Context context, RecipeDetailFragment.OnStepClickListener listener){
-        mDetailList = objects;
+    public RecipeDetailAdapter(List<Object> list, Context context, RecipeDetailFragment.OnStepClickListener listener, Recipe recipe){
+        mDetailList = list;
         mContext = context;
         mCallback = listener;
+        mRecipe = recipe;
     }
 
     @NonNull
@@ -87,7 +90,7 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mCallback.onStepSelected(position, mDetailList);
+                        mCallback.onStepSelected(position, mRecipe);
                     }
                 });
             default:
@@ -99,14 +102,16 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private void bindIngredientHolder(IngredientHolder ingredientHolder, int position){
         Ingredient ingredient = (Ingredient) mDetailList.get(position);
         if (ingredient != null){
-            ingredientHolder.getQuantity().setText(ingredient.quantity);
+            String m = ingredient.measure;
+            if (m.equals("UNIT")){m="";}
+            ingredientHolder.getQuantity().setText(ingredient.quantity + " " + m);
             ingredientHolder.getIngredient().setText(ingredient.ingredient);
         }
     }
 
     private void bindStepHolder(StepHolder stepHolder, int position){
         Step step = (Step) mDetailList.get(position);
-        stepHolder.getShortDescription().setText(step.shortDes);
+        stepHolder.getShortDescription().setText(step.shortDescription);
     }
 
     private void bindSubheaderHolder(SubheaderHolder subheaderHolder, int position){

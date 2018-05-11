@@ -9,18 +9,9 @@ import android.support.design.widget.TabLayout;
 import android.util.Log;
 import android.view.View;
 
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.LoadControl;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
-
-import java.util.ArrayList;
 import java.util.List;
 
-import leonard.bakingapp.data.Step;
+import leonard.bakingapp.classes.Step;
 
 public class StepsActivity extends AppCompatActivity {
     private static final String TAG = StepsActivity.class.getSimpleName();
@@ -62,7 +53,7 @@ public class StepsActivity extends AppCompatActivity {
 
         //set title
         final List<Step> stepList = getIntent().getParcelableArrayListExtra("stepList");
-        setTitle(stepList.get(position).shortDes);
+        setTitle(stepList.get(position).shortDescription);
 
         //set listener
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -89,7 +80,7 @@ public class StepsActivity extends AppCompatActivity {
 //                stepsFragment.initializeMediaSession();
 //                stepsFragment.initializePlayer(mSimpleExoPlayer, exoPlayerView);
 
-                setTitle(stepList.get(position).shortDes);
+                setTitle(stepList.get(position).shortDescription);
             }
 
             @Override
