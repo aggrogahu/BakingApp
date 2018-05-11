@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,20 +14,32 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import leonard.bakingapp.data.Recipe;
+
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.CardViewHolder> {
     private List<String> mRecipeList;
     private Context mContext;
+    private List<Recipe> mRecipes;
 
-    RecipeAdapter(List<String> recipes, Context context){
+    RecipeAdapter(List<Recipe> recipes, Context context){
+        Log.d("TAG", "constructor: ");
+        mRecipes = recipes;
         if (recipes != null) {
-            mRecipeList = recipes;
+            int length = mRecipes.size();
+            mRecipeList = new ArrayList<>();
+             for (int i = 0; i < length; i++){
+
+                 mRecipeList.add(mRecipes.get(i).name);
+             }
+//            mRecipeList = recipes;
         }
         else {
+            Log.d("TAG", "wrong");
             //TODO remove dummy recipe array
             mRecipeList = new ArrayList<>();
-            mRecipeList.add("Nutella Pie");
-            mRecipeList.add("Brownies");
-            mRecipeList.add("Yellow Cake");
+//            mRecipeList.add("Nutella Pie");
+//            mRecipeList.add("Brownies");
+//            mRecipeList.add("Yellow Cake");
 //            mRecipeList.add("Cheesecake");
         }
         mContext = context;

@@ -90,7 +90,7 @@ public class StepsFragment extends Fragment
         stepObs.add(mStep.videoURL);
         stepObs.add(mStep.description);
 
-//        TODO(1)use recycler view and adapter to get reference to playerview
+//        TODO use recycler view and adapter to get reference to playerview
         mStepsAdapter = new StepsAdapter(stepObs,getContext());
         mRecyclerView.setAdapter(mStepsAdapter);
 //        mRecyclerView.getChildAt(0);

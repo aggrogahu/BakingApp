@@ -53,6 +53,7 @@ public class RecipeDetailFragment extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        //TODO read data from recipe array and remove dummy array
         List<Object> mDetailList = getDummyArrayList();
 
         mRecyclerView.setAdapter(new RecipeDetailAdapter(mDetailList, getContext(), mCallback));
