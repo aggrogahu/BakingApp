@@ -17,26 +17,27 @@ import java.util.List;
 import leonard.bakingapp.data.Recipe;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.CardViewHolder> {
-    private List<String> mRecipeList;
+//    private List<String> mRecipeList;
     private Context mContext;
     private List<Recipe> mRecipes;
 
     RecipeAdapter(List<Recipe> recipes, Context context){
         Log.d("TAG", "constructor: ");
-        mRecipes = recipes;
+//        mRecipes = recipes;
         if (recipes != null) {
-            int length = mRecipes.size();
-            mRecipeList = new ArrayList<>();
-             for (int i = 0; i < length; i++){
-
-                 mRecipeList.add(mRecipes.get(i).name);
-             }
+            mRecipes = recipes;
+//            int length = mRecipes.size();
+//            mRecipeList = new ArrayList<>();
+//             for (int i = 0; i < length; i++){
+//
+//                 mRecipeList.add(mRecipes.get(i).name);
+//             }
 //            mRecipeList = recipes;
         }
         else {
             Log.d("TAG", "wrong");
             //TODO remove dummy recipe array
-            mRecipeList = new ArrayList<>();
+            mRecipes = new ArrayList<>();
 //            mRecipeList.add("Nutella Pie");
 //            mRecipeList.add("Brownies");
 //            mRecipeList.add("Yellow Cake");
@@ -65,7 +66,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.CardViewHo
 
     @Override
     public void onBindViewHolder(@NonNull CardViewHolder holder, final int position) {
-        holder.mRecipeName.setText(mRecipeList.get(position));
+        holder.mRecipeName.setText(mRecipes.get(position).name);
 
         final Intent intent = new Intent(mContext, RecipeDetailActivity.class);
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +82,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.CardViewHo
 
     @Override
     public int getItemCount() {
-        return mRecipeList.size();
+        return mRecipes.size();
     }
 }
