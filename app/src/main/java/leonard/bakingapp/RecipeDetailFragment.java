@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import leonard.bakingapp.classes.Recipe;
@@ -57,10 +58,11 @@ public class RecipeDetailFragment extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        //TODO read data from recipe array and remove dummy array
-        //TODO(0) load saved instancestate
+        //read data from recipe array
+        //load saved instancestate
         if (savedInstanceState == null) {
             Bundle args = getArguments();
+            assert args != null;
             mRecipe = (Recipe) args.get("recipe");
         } else {
             mRecipe = savedInstanceState.getParcelable(RECIPE);
@@ -76,13 +78,9 @@ public class RecipeDetailFragment extends Fragment {
         ArrayList<Object> detailsList = new ArrayList<>();
         detailsList.add(mRecipe.name);
         detailsList.add(getString(R.string.ingredients_label));
-        for(int i = 0; i < mRecipe.ingredients.length; i++){
-            detailsList.add(mRecipe.ingredients[i]);
-        }
+        detailsList.addAll(Arrays.asList(mRecipe.ingredients));
         detailsList.add(getString(R.string.steps_label));
-        for(int i = 0; i < mRecipe.steps.length; i++){
-            detailsList.add(mRecipe.steps[i]);
-        }
+        detailsList.addAll(Arrays.asList(mRecipe.steps));
         return detailsList;
     }
 

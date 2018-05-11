@@ -35,13 +35,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.CardViewHo
 //            mRecipeList = recipes;
         }
         else {
-            Log.d("TAG", "wrong");
-            //TODO remove dummy recipe array
+            Log.d("TAG", "null");
             mRecipes = new ArrayList<>();
-//            mRecipeList.add("Nutella Pie");
-//            mRecipeList.add("Brownies");
-//            mRecipeList.add("Yellow Cake");
-//            mRecipeList.add("Cheesecake");
         }
         mContext = context;
     }

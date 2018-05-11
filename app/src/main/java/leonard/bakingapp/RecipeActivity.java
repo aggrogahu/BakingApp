@@ -39,6 +39,7 @@ public class RecipeActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<Recipe> mRecipeArray;
 
+//    private static final String RECIPE_LIST_STATE = "recipeListStateKey";
     private static final String RECIPE_LIST = "recipeListKey";
 //    private String recipeJsonStr;
 
@@ -50,10 +51,9 @@ public class RecipeActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.recipe_recycler_view);
 
 //        recipeJsonStr = "";
-
 //        mRecyclerView.setHasFixedSize(true);
 
-        //TODO change to grid in case of wide/tablet screen size
+        //change to grid in case of wide/tablet screen size
         int orientation = getResources().getConfiguration().orientation;
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         float width = displayMetrics.widthPixels / displayMetrics.density;
@@ -224,7 +224,6 @@ public class RecipeActivity extends AppCompatActivity {
         }
         String name = mRecipeArray.get(0).name;
         Log.d(TAG, "updateRecipeCards: " + name);
-        //TODO(0) make adapter take recipe[]
 //        mRecyclerView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
     }
@@ -232,6 +231,7 @@ public class RecipeActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+//        outState.putParcelable(RECIPE_LIST_STATE, mLayoutManager.onSaveInstanceState());
         outState.putParcelableArrayList(RECIPE_LIST, mRecipeArray);
     }
 }

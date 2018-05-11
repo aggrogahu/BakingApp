@@ -102,14 +102,15 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private void bindIngredientHolder(IngredientHolder ingredientHolder, int position){
         Ingredient ingredient = (Ingredient) mDetailList.get(position);
         if (ingredient != null){
-            String m = ingredient.measure;
-            if (m.equals("UNIT")){m="";}
+            String m = ingredient.measure.toLowerCase();
+            if (m.equals("unit")){m="";}
             ingredientHolder.getQuantity().setText(ingredient.quantity + " " + m);
             ingredientHolder.getIngredient().setText(ingredient.ingredient);
         }
     }
 
     private void bindStepHolder(StepHolder stepHolder, int position){
+        //TODO include step number
         Step step = (Step) mDetailList.get(position);
         stepHolder.getShortDescription().setText(step.shortDescription);
     }

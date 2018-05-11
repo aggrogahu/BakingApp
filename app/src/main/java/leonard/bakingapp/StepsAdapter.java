@@ -101,7 +101,8 @@ public class StepsAdapter extends RecyclerView.Adapter {
 //        mExoPlayer.addListener(this);
 
         // Prepare the MediaSource.
-        String userAgent = Util.getUserAgent(mContext, "Derp");
+//        //TODO pass a cached data source
+        String userAgent = Util.getUserAgent(mContext, "BakingApp");
         Uri mediaUri = Uri.parse(mStepObs.get(position).toString());
         MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                 mContext, userAgent), new DefaultExtractorsFactory(), null, null);

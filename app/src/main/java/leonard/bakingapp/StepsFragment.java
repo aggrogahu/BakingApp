@@ -89,10 +89,8 @@ public class StepsFragment extends Fragment
 //        mPlayerView = rootView.findViewById(R.id.test_exo);
 //        initializeMediaSession();
 //        String url = mStep.videoURL;
-//        //TODO pass a cached data source
-//        initializePlayer(Uri.parse(url));
 
-        //TODO? set on click listener
+//        initializePlayer(Uri.parse(url));
         return rootView;
     }
 
@@ -198,6 +196,19 @@ public class StepsFragment extends Fragment
 //
 //    }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+//        Log.d(TAG, "onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        Log.d(TAG, "onResume");
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -205,12 +216,21 @@ public class StepsFragment extends Fragment
 //        mMediaSession.setActive(false);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+//        Log.d(TAG, "onPause");
+    }
+
+
     private void releasePlayer() {
         Log.d(TAG, "releasePlayer");
-        RecyclerView.ViewHolder viewHolder = mRecyclerView.getChildViewHolder(mRecyclerView.getChildAt(0));
-        if (viewHolder instanceof VideoViewHolder){
-            VideoViewHolder videoViewHolder = (VideoViewHolder) viewHolder;
-            ExoPlayer exoPlayer = videoViewHolder.getPlayerView().getPlayer();
+
+//        RecyclerView.ViewHolder viewHolder = mRecyclerView.getChildViewHolder(mRecyclerView.getChildAt(0));
+        SimpleExoPlayer exoPlayer = getExoPlayer();
+        if (exoPlayer!= null){
+//            VideoViewHolder videoViewHolder = (VideoViewHolder) viewHolder;
+//            ExoPlayer exoPlayer = videoViewHolder.getPlayerView().getPlayer();
             exoPlayer.stop();
             exoPlayer.release();
         }
@@ -218,6 +238,16 @@ public class StepsFragment extends Fragment
 //        mExoPlayer.stop();
 //        mExoPlayer.release();
 //        mExoPlayer = null;
+    }
+
+
+    private SimpleExoPlayer getExoPlayer(){
+        RecyclerView.ViewHolder viewHolder = mRecyclerView.getChildViewHolder(mRecyclerView.getChildAt(0));
+        if (viewHolder instanceof VideoViewHolder) {
+            VideoViewHolder videoViewHolder = (VideoViewHolder) viewHolder;
+            return videoViewHolder.getPlayerView().getPlayer();
+        }
+        return null;
     }
 
     private class MySessionCallback extends MediaSessionCompat.Callback {
