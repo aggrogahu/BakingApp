@@ -23,11 +23,15 @@ public class RecipeDetailFragment extends Fragment {
 
     OnStepClickListener mCallback;
     private Recipe mRecipe;
+    private RecipeDetailAdapter mRecipeDetailAdapter;
+    private int selected;
 
     private static final String RECIPE = "recipeKey";
+    static final String SELECTED = "selectedKey";
+    private static final String CURRENT_SELECTED = "currentKey";
 
     public interface OnStepClickListener{
-        void onStepSelected(int i, Recipe recipe);
+        boolean onStepSelected(int i, Recipe recipe);
     }
 
     @Override
@@ -57,19 +61,25 @@ public class RecipeDetailFragment extends Fragment {
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
+//        TODO save and restore layout manager state
 
         //read data from recipe array
         //load saved instancestate
+        selected = RecyclerView.NO_POSITION;
         if (savedInstanceState == null) {
             Bundle args = getArguments();
             assert args != null;
             mRecipe = (Recipe) args.get("recipe");
+            selected = args.getInt(SELECTED);
         } else {
+            Log.d(TAG, "onCreateView: restoring");
             mRecipe = savedInstanceState.getParcelable(RECIPE);
+            selected = savedInstanceState.getInt(CURRENT_SELECTED);
         }
         List<Object> mDetailList = buildRecipeObjectList();
 
-        mRecyclerView.setAdapter(new RecipeDetailAdapter(mDetailList, getContext(), mCallback, mRecipe));
+        mRecipeDetailAdapter = new RecipeDetailAdapter(mDetailList, getContext(), mCallback, mRecipe, selected);
+        mRecyclerView.setAdapter(mRecipeDetailAdapter);
 
         return rootView;
     }
@@ -89,32 +99,7 @@ public class RecipeDetailFragment extends Fragment {
         super.onSaveInstanceState(outState);
         Log.d(TAG, "onSaveInstanceState!!!");
         outState.putParcelable(RECIPE, mRecipe);
+        outState.putInt(CURRENT_SELECTED, selected);
     }
 
-    //    private ArrayList<Object> getDummyArrayList(){
-//        ArrayList<Object> detailsList = new ArrayList<>();
-//        detailsList.add("Nutella Pie");
-//        detailsList.add(getString(R.string.ingredients_label));
-//        detailsList.add(new Ingredient("12 tblsp", "sugar"));
-//        detailsList.add(new Ingredient("2 cup", "Graham Cracker crumbs"));
-//        detailsList.add(new Ingredient("6 tblsp", "Nutella or other chocolate-hazelnut spread ofc"));
-//        detailsList.add(getString(R.string.steps_label));
-//        detailsList.add(new Step(
-//                "Recipe Introduction",
-//                "Recipe Introduction",
-//                "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd974_-intro-creampie/-intro-creampie.mp4"
-//                ,
-//                null));
-//        detailsList.add(new Step(
-//                "Starting prep",
-//                "1. Preheat the oven to 350°F. Butter a 9\" deep dish pie pan.",
-//                "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd9a6_2-mix-sugar-crackers-creampie/2-mix-sugar-crackers-creampie.mp4",
-//                null));
-//        detailsList.add(new Step(
-//                "Press shit",
-//                "Press it",
-//                "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd9cb_4-press-crumbs-in-pie-plate-creampie/4-press-crumbs-in-pie-plate-creampie.mp4",
-//                null));
-//        return detailsList;
-//    }
 }

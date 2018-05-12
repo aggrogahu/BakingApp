@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -13,39 +14,50 @@ import java.util.Arrays;
 import leonard.bakingapp.classes.Recipe;
 import leonard.bakingapp.classes.Step;
 
+import static leonard.bakingapp.RecipeDetailFragment.SELECTED;
+
 public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailFragment.OnStepClickListener{
     private static final String TAG = RecipeDetailActivity.class.getSimpleName();
     private boolean mTwoPane;
 //    private RecyclerView.Adapter mAdapter;
 
-
-    //COMPLETED refactor code to fragment
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
         Log.d(TAG, "onCreate");
 
+        int selected = RecyclerView.NO_POSITION;
+
         // Determine if you're creating a two-pane or single-pane display
         if(findViewById(R.id.step_detail_container) != null) {
             mTwoPane = true;
+            Recipe recipe = getIntent().getParcelableExtra("recipe");
+            selected = recipe.ingredients.length + 3;
 
-            // TODO Initialize the step detail with first step if two pane
+            // Initialize the step detail with first step if two pane
             if (savedInstanceState == null){
                 displayStep(0);
-
             } else {
-                mTwoPane = false;
+//                mTwoPane = false;
             }
 
+        }else {
+            mTwoPane = false;
         }
+
+
         if (savedInstanceState == null){
             RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
-            recipeDetailFragment.setArguments(getIntent().getExtras());
+            Bundle b = getIntent().getExtras();
+            b.putInt(SELECTED, selected);
+            recipeDetailFragment.setArguments(b);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.recipe_detail_container, recipeDetailFragment)
                     .commit();
-        } else {
+        }
+
+
 //            Log.d("M", "something saved");
 //            mFragment = getSupportFragmentManager().getFragment(savedInstanceState, FRAGMENT_STATE);
 //            if (mFragment.isAdded()) {
@@ -56,16 +68,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 //                        .add(R.id.main_container, mFragment)
 //                        .commit();
 //            }
-        }
 
-//        RecyclerView mRecyclerView = findViewById(R.id.recipe_detail_recycler_view);
-//        mRecyclerView.setHasFixedSize(true);
-//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-//        mRecyclerView.setLayoutManager(mLayoutManager);
-//
-//        List<Object> mDetailList = getDummyArrayList();
-//
-//        mRecyclerView.setAdapter(new RecipeDetailAdapter(mDetailList));
 
     }
 
@@ -76,19 +79,18 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
     }
 
     @Override
-    public void onStepSelected(int position, Recipe recipe) {
-        //figure out offset
+    public boolean onStepSelected(int position, Recipe recipe) {
+        //figure out offset to get position of recipe steps in the recycler view
         int offsetPosition = position - (recipe.ingredients.length + 3);
 
-        //TODO launch step detail; display step detail fragment if two pane layout
+        //launch step detail; display step detail fragment if two pane layout
         if(!mTwoPane) {
-            Log.d(TAG, "onStepSelected: twopane");
+            // build intent
             final Intent intent = new Intent(this, StepsActivity.class);
             Bundle b = new Bundle();
-
             b.putInt("selectedStep", offsetPosition);
 
-            //build step array from object list
+            // build step array from object list
             ArrayList<Step> stepList = new ArrayList<Step>();
             stepList.addAll(Arrays.asList(recipe.steps));
 
@@ -96,9 +98,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
             intent.putExtras(b);
             this.startActivity(intent);
         } else {
-            Log.d(TAG, "onStepSelected: not");
+            // two panel display
             displayStep(offsetPosition);
         }
+        return mTwoPane;
     }
 
     private void displayStep(int position){
