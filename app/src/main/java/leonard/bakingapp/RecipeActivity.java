@@ -39,6 +39,7 @@ public class RecipeActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<Recipe> mRecipeArray;
 
+//    private static final String RECIPE_LIST_STATE = "recipeListStateKey";
     private static final String RECIPE_LIST = "recipeListKey";
 //    private String recipeJsonStr;
 
@@ -50,10 +51,9 @@ public class RecipeActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.recipe_recycler_view);
 
 //        recipeJsonStr = "";
-
 //        mRecyclerView.setHasFixedSize(true);
 
-        //TODO change to grid in case of wide/tablet screen size
+        //change to grid in case of wide/tablet screen size
         int orientation = getResources().getConfiguration().orientation;
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         float width = displayMetrics.widthPixels / displayMetrics.density;
@@ -86,11 +86,9 @@ public class RecipeActivity extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
 
         if (savedInstanceState == null){
-            Log.d(TAG, "onCreate: new array");
             FetchRecipesTask recipesTask = new FetchRecipesTask();
             recipesTask.execute();
         } else {
-            Log.d(TAG, "onCreate: restoring!!!");
             updateRecipeCards(savedInstanceState.<Recipe>getParcelableArrayList(RECIPE_LIST));
         }
 
@@ -99,7 +97,6 @@ public class RecipeActivity extends AppCompatActivity {
 
     private List<Recipe> extractRecipeNames(String recipeStr //JSONObject[] recipeJsonArray
     ){
-        Log.d(TAG, "extractRecipeNames");
 //        List<String> recipeList = new ArrayList<>();
         Gson gson = new Gson();
         Type collectionType = new TypeToken<Collection<Recipe>>(){}.getType();
@@ -223,8 +220,6 @@ public class RecipeActivity extends AppCompatActivity {
 //            mRecipeArray = recipes.clone();
         }
         String name = mRecipeArray.get(0).name;
-        Log.d(TAG, "updateRecipeCards: " + name);
-        //TODO(0) make adapter take recipe[]
 //        mRecyclerView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
     }
@@ -232,6 +227,7 @@ public class RecipeActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+//        outState.putParcelable(RECIPE_LIST_STATE, mLayoutManager.onSaveInstanceState());
         outState.putParcelableArrayList(RECIPE_LIST, mRecipeArray);
     }
 }

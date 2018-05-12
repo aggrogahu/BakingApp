@@ -17,7 +17,6 @@ class StepsPagerAdapter extends FragmentStatePagerAdapter{
     List<Step> mStepList;
 //    private Fragment mCurrentFragment;
 
-    //TODO save state of fragments
     public StepsPagerAdapter(FragmentManager fm, List<Step> stepList) {
         super(fm);
         mStepList = stepList;
