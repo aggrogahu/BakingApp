@@ -143,6 +143,10 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return mDetailList.size();
     }
 
+    public int getSelectedPosition(){
+        return selectedPosition;
+    }
+
     @Override
     public int getItemViewType(int position) {
         Object item = mDetailList.get(position);

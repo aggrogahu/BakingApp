@@ -3,6 +3,7 @@ package leonard.bakingapp;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.design.widget.TabLayout;
@@ -15,9 +16,11 @@ import leonard.bakingapp.classes.Step;
 
 public class StepsActivity extends AppCompatActivity {
     private static final String TAG = StepsActivity.class.getSimpleName();
-    //TODO might have to duplicate this code in recipe detail activity for two pane
     StepsPagerAdapter mStepsPagerAdapter;
     ViewPager mViewPager;
+    private FloatingActionButton rightFAB, leftFAB;
+    private boolean isLandscape;
+    private int stepLength;
 //    private SimpleExoPlayer mSimpleExoPlayer;
 
 
@@ -26,14 +29,21 @@ public class StepsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_detail);
         int orientation = getResources().getConfiguration().orientation;
+        int position = getIntent().getIntExtra("selectedStep", 0);
+        leftFAB = findViewById(R.id.fableft);
+        rightFAB = findViewById(R.id.fabright);
+
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-          //TODO if landscape && step contains video, hide tick marks and action bar, and display button navigation
+          //if landscape && step contains video, hide tick marks and action bar, and display button navigation
+            isLandscape = true;
             getSupportActionBar().hide();
             findViewById(R.id.tick_marks).setVisibility(View.GONE);
+            if(position != 0){leftFAB.setVisibility(View.VISIBLE);}
+            rightFAB.setVisibility(View.VISIBLE);
         }
-//        else if (orientation == Configuration.ORIENTATION_PORTRAIT){
-//
-//        }
+        else {
+            isLandscape = false;
+        }
 
 //        //initialize exoPlayer
 //        TrackSelector trackSelector = new DefaultTrackSelector();
@@ -48,11 +58,12 @@ public class StepsActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
         //begin with the selected step
-        int position = getIntent().getIntExtra("selectedStep", 0);
+
         mViewPager.setCurrentItem(position);
 
         //set title
         final List<Step> stepList = getIntent().getParcelableArrayListExtra("stepList");
+        stepLength = stepList.size()-1;
         setTitle(stepList.get(position).shortDescription);
 
         //set listener
@@ -79,7 +90,7 @@ public class StepsActivity extends AppCompatActivity {
 //                SimpleExoPlayerView exoPlayerView = stepsFragment.getView().findViewById(R.id.step_exoPlayerView);
 //                stepsFragment.initializeMediaSession();
 //                stepsFragment.initializePlayer(mSimpleExoPlayer, exoPlayerView);
-
+                updateNavButtons(position);
                 setTitle(stepList.get(position).shortDescription);
             }
 
@@ -93,10 +104,38 @@ public class StepsActivity extends AppCompatActivity {
 
     }
 
+    private void updateNavButtons(int position){
+        Log.d(TAG, "updateNavButtons: position" + position);
+        Log.d(TAG, "updateNavButtons: stepLength" + stepLength);
+        if(isLandscape){
+            if(position==0){
+                rightFAB.setVisibility(View.VISIBLE);
+                leftFAB.setVisibility(View.INVISIBLE);
+            } else if (position==stepLength){
+                rightFAB.setVisibility(View.INVISIBLE);
+                leftFAB.setVisibility(View.VISIBLE);
+            } else {
+                rightFAB.setVisibility(View.VISIBLE);
+                leftFAB.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
+    }
+
+    public void nextFabButton(View view) {
+        Log.d(TAG, "nextFabButton: ");
+        mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+    }
+
+    public void previousFabButton(View view) {
+        Log.d(TAG, "previousFabButton: ");
+        mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
     }
 
     //    private void attachPlayer() {

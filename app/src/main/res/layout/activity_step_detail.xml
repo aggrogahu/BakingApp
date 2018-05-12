@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
      android:layout_width="match_parent">
 
@@ -13,11 +14,40 @@
         android:id="@+id/tick_marks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:tabGravity="center"
         app:tabBackground="@drawable/tab_selector"
-        app:tabIndicatorHeight="0dp"
-        />
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabright"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginBottom="268dp"
+        android:layout_marginEnd="45dp"
+        android:layout_marginRight="45dp"
+        android:layout_marginTop="89dp"
+        android:src="@drawable/ic_menu_forward"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="nextFabButton"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fableft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginLeft="27dp"
+        android:layout_marginStart="27dp"
+        android:src="@drawable/ic_menu_back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"
+        android:onClick="previousFabButton" />
 </android.support.constraint.ConstraintLayout>
 

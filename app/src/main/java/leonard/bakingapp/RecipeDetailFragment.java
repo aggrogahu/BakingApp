@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,11 +25,12 @@ public class RecipeDetailFragment extends Fragment {
     OnStepClickListener mCallback;
     private Recipe mRecipe;
     private RecipeDetailAdapter mRecipeDetailAdapter;
-    private int selected;
+    private LinearLayoutManager mLinearLayoutManager;
 
     private static final String RECIPE = "recipeKey";
     static final String SELECTED = "selectedKey";
     private static final String CURRENT_SELECTED = "currentKey";
+    private static final String LAYOUT_MANAGER = "layoutKey";
 
     public interface OnStepClickListener{
         boolean onStepSelected(int i, Recipe recipe);
@@ -59,27 +61,34 @@ public class RecipeDetailFragment extends Fragment {
 
         mRecyclerView.setHasFixedSize(true);
 
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-//        TODO save and restore layout manager state
 
+
+        mLinearLayoutManager = new LinearLayoutManager(getContext());
         //read data from recipe array
         //load saved instancestate
-        selected = RecyclerView.NO_POSITION;
+//        selected = RecyclerView.NO_POSITION;
+        int selected;
         if (savedInstanceState == null) {
+
+            mRecyclerView.setLayoutManager(mLinearLayoutManager);
             Bundle args = getArguments();
             assert args != null;
             mRecipe = (Recipe) args.get("recipe");
             selected = args.getInt(SELECTED);
+
+
         } else {
             Log.d(TAG, "onCreateView: restoring");
+            mLinearLayoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(LAYOUT_MANAGER));
+            mRecyclerView.setLayoutManager(mLinearLayoutManager);
             mRecipe = savedInstanceState.getParcelable(RECIPE);
             selected = savedInstanceState.getInt(CURRENT_SELECTED);
         }
         List<Object> mDetailList = buildRecipeObjectList();
-
         mRecipeDetailAdapter = new RecipeDetailAdapter(mDetailList, getContext(), mCallback, mRecipe, selected);
         mRecyclerView.setAdapter(mRecipeDetailAdapter);
+
+
 
         return rootView;
     }
@@ -99,7 +108,8 @@ public class RecipeDetailFragment extends Fragment {
         super.onSaveInstanceState(outState);
         Log.d(TAG, "onSaveInstanceState!!!");
         outState.putParcelable(RECIPE, mRecipe);
-        outState.putInt(CURRENT_SELECTED, selected);
+        outState.putInt(CURRENT_SELECTED, mRecipeDetailAdapter.getSelectedPosition());
+        outState.putParcelable(LAYOUT_MANAGER, mLinearLayoutManager.onSaveInstanceState());
     }
 
 }

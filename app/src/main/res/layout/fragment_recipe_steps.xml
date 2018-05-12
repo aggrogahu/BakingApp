@@ -12,6 +12,7 @@
         android:layout_weight="7"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <!--<com.google.android.exoplayer2.ui.SimpleExoPlayerView xmlns:android="http://schemas.android.com/apk/res/android"-->
 
         <!--android:id="@+id/test_exo"-->
