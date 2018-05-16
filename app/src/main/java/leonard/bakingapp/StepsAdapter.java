@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -20,9 +21,11 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import leonard.bakingapp.classes.viewholders.ImageHolder;
 import leonard.bakingapp.classes.viewholders.StepHolder;
 import leonard.bakingapp.classes.viewholders.VideoViewHolder;
 
@@ -54,17 +57,17 @@ public class StepsAdapter extends RecyclerView.Adapter {
 //            case SHORT_DESCRIPTION:
 //                break;
             case DESCRIPTION:
-                Log.d(TAG, "onCreateViewHolder: Desc created");
                 View stepView = inflater.inflate(R.layout.detail_step_item,parent,false);
                 viewHolder = new StepHolder(stepView);
                 break;
             case VIDEO:
-                Log.d(TAG, "onCreateViewHolder: Video view created");
                 View videoView = inflater.inflate(R.layout.step_video,parent,false);
                 viewHolder = new VideoViewHolder(videoView);
                 break;
             case IMAGE:
                 //TODO create image holder
+                View imageView = inflater.inflate(R.layout.step_image,parent,false);
+                viewHolder = new VideoViewHolder(imageView);
             default:
                 break;
         }
@@ -81,9 +84,19 @@ public class StepsAdapter extends RecyclerView.Adapter {
             case VIDEO:
                 VideoViewHolder videoViewHolder = (VideoViewHolder) holder;
                 bindVideoHolder(videoViewHolder,position);
+                break;
+            case IMAGE:
+                Log.d(TAG, "onBindViewHolder: image");
+                ImageHolder imageHolder = (ImageHolder) holder;
+                bindImageHolder(imageHolder,position);
             default:
                 break;
         }
+    }
+
+    private void bindImageHolder(ImageHolder imageHolder, int position) {
+        String url = mStepObs.get(position);
+        Picasso.get().load(url).into(imageHolder.getmImageView());
     }
 
     private void bindDescHolder(StepHolder stepHolder, int position){
@@ -103,7 +116,7 @@ public class StepsAdapter extends RecyclerView.Adapter {
         // Prepare the MediaSource.
 //        //TODO pass a cached data source
         String userAgent = Util.getUserAgent(mContext, "BakingApp");
-        Uri mediaUri = Uri.parse(mStepObs.get(position).toString());
+        Uri mediaUri = Uri.parse(mStepObs.get(position));
         MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                 mContext, userAgent), new DefaultExtractorsFactory(), null, null);
         mExoPlayer.prepare(mediaSource);
@@ -119,9 +132,11 @@ public class StepsAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
         String item = mStepObs.get(position);
+        Log.d(TAG, "getItemViewType: " + item);
         if(item.contains(".mp4")){
             return VIDEO;
         } else if(item.contains(".jpeg") || item.contains(".jpg") || item.contains(".png")){
+            Log.d(TAG, "getItemViewType: IMAGE");
             return IMAGE;
         } else {
             return DESCRIPTION;

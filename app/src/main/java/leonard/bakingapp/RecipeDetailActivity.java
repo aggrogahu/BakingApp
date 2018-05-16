@@ -3,6 +3,7 @@ package leonard.bakingapp;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import leonard.bakingapp.classes.Ingredient;
 import leonard.bakingapp.classes.Recipe;
 import leonard.bakingapp.classes.Step;
 
@@ -93,6 +95,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
             // build step array from object list
             ArrayList<Step> stepList = new ArrayList<Step>();
             stepList.addAll(Arrays.asList(recipe.steps));
+            // dummy step to test image case
+//            stepList.add(new Step("short", "desc", "", "http://i.imgur.com/DvpvklR.png"));
 
             b.putParcelableArrayList("stepList", stepList);
             intent.putExtras(b);

@@ -3,6 +3,7 @@ package leonard.bakingapp;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -42,6 +43,9 @@ public class RecipeActivity extends AppCompatActivity {
 //    private static final String RECIPE_LIST_STATE = "recipeListStateKey";
     private static final String RECIPE_LIST = "recipeListKey";
 //    private String recipeJsonStr;
+
+    @Nullable
+//    private SimpleIdlingResource mSimpleIdlingResource;
 
 
     @Override
@@ -114,6 +118,13 @@ public class RecipeActivity extends AppCompatActivity {
 //        Log.d(TAG, "extractRecipeNames: " + recipe.name);
         return recipes;
     }
+
+//    public android.support.test.espresso.IdlingResource getIdlingResource() {
+//        if (mSimpleIdlingResource == null){
+//            mSimpleIdlingResource = new SimpleIdlingResource();
+//        }
+//        return mSimpleIdlingResource;
+//    }
 
     public class FetchRecipesTask extends AsyncTask<String,Void,List<Recipe>>{
         @Override
@@ -219,7 +230,7 @@ public class RecipeActivity extends AppCompatActivity {
             mRecipeArray.addAll(recipes);
 //            mRecipeArray = recipes.clone();
         }
-        String name = mRecipeArray.get(0).name;
+//        String name = mRecipeArray.get(0).name;
 //        mRecyclerView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
     }

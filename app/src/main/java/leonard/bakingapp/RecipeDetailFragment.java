@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import leonard.bakingapp.classes.Recipe;
+import leonard.bakingapp.classes.Step;
 
 public class RecipeDetailFragment extends Fragment {
     private final String TAG = RecipeDetailFragment.class.getSimpleName();
@@ -74,6 +75,8 @@ public class RecipeDetailFragment extends Fragment {
             Bundle args = getArguments();
             assert args != null;
             mRecipe = (Recipe) args.get("recipe");
+            // dummy step
+            mRecipe.steps[mRecipe.steps.length-1] = new Step("short", "desc", "", "http://i.imgur.com/DvpvklR.png");
             selected = args.getInt(SELECTED);
 
 
@@ -100,6 +103,7 @@ public class RecipeDetailFragment extends Fragment {
         detailsList.addAll(Arrays.asList(mRecipe.ingredients));
         detailsList.add(getString(R.string.steps_label));
         detailsList.addAll(Arrays.asList(mRecipe.steps));
+//        detailsList.add(new Step("short", "desc", "", "http://i.imgur.com/DvpvklR.png"));
         return detailsList;
     }
 
