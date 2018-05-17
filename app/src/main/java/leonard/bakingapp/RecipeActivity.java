@@ -1,6 +1,9 @@
 package leonard.bakingapp;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
@@ -12,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.facebook.stetho.Stetho;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -32,6 +36,9 @@ import java.util.Collection;
 import java.util.List;
 
 import leonard.bakingapp.classes.Recipe;
+import leonard.bakingapp.data.RecipeDb;
+import leonard.bakingapp.data.RecipeTable;
+//import leonard.bakingapp.data.RecipeTable;
 
 public class RecipeActivity extends AppCompatActivity {
     private String TAG = RecipeActivity.class.getSimpleName();
@@ -96,7 +103,47 @@ public class RecipeActivity extends AppCompatActivity {
             updateRecipeCards(savedInstanceState.<Recipe>getParcelableArrayList(RECIPE_LIST));
         }
 
+//                 /* "ctrl+/" on this line to turn on Stetho debugger
+        final Context context = this;
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(context)
+                        .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(context))
+                        .build());//*/
 
+
+    }
+
+    private void addToRecipeDb(ArrayList<Recipe> mRecipeArray) {
+//        RecipeDb recipeDb = new RecipeDb();
+
+        if(mRecipeArray!=null){
+            for(int i = 0; i < mRecipeArray.size() ; i++)
+                if (!checkIfExists(mRecipeArray.get(i))){
+                    Gson gson = new Gson();
+                    String ingredientJsonString = gson.toJson(mRecipeArray.get(i).ingredients);
+                    String recipeName = mRecipeArray.get(i).name;
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put("col_recipe", recipeName);
+                    contentValues.put("col_ingredients", ingredientJsonString);
+                    getContentResolver().insert(RecipeTable.CONTENT_URI, contentValues);
+                } else {
+                    Log.d(TAG, "addToRecipeDb: recipe already exists");
+                }
+
+
+        }
+//        getContentResolver().insert(RecipeTable.CONTENT_URI,RecipeTable.getContentValues(recipeDb,false));
+    }
+
+    private boolean checkIfExists(Recipe recipe) {
+//        TODO query to see if the recipe is already in the database
+        Boolean exists = false;
+        Cursor cursor = getContentResolver().query(RecipeTable.CONTENT_URI,null,"col_recipe=\"" + recipe.name + "\"",null,null);
+        if(cursor.getCount()>0){
+            exists = true;
+        }
+        cursor.close();
+        return exists;
     }
 
     private List<Recipe> extractRecipeNames(String recipeStr //JSONObject[] recipeJsonArray
@@ -230,6 +277,7 @@ public class RecipeActivity extends AppCompatActivity {
             mRecipeArray.addAll(recipes);
 //            mRecipeArray = recipes.clone();
         }
+        addToRecipeDb(mRecipeArray);
 //        String name = mRecipeArray.get(0).name;
 //        mRecyclerView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();

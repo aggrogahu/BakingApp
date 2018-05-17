@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.media.session.MediaSessionCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,15 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import leonard.bakingapp.classes.Step;
-import leonard.bakingapp.classes.viewholders.VideoViewHolder;
+import leonard.bakingapp.classes.views.VideoViewHolder;
 
 public class StepsFragment extends Fragment
 //        implements ExoPlayer.EventListener
@@ -36,7 +32,7 @@ public class StepsFragment extends Fragment
 //    private PlaybackStateCompat.Builder mStateBuilder;
     private RecyclerView mRecyclerView;
 
-//    private List<Integer> mStepList;
+    private List<String> stepObs;
 //    private int mListIndex;
 
     public StepsFragment(){
@@ -45,6 +41,7 @@ public class StepsFragment extends Fragment
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+//        Log.d(TAG, "onCreateView: ");
 //        return super.onCreateView(inflater, container, savedInstanceState);
 
         // Inflate layout and set views accordingly (send dummy information to recyclerView adapter)
@@ -62,16 +59,19 @@ public class StepsFragment extends Fragment
 
         Bundle args = getArguments();
         Step mStep = null;
+        Boolean areNotDelaying = false;
         if (args != null) {
             mStep = args.getParcelable(STEP);
+            areNotDelaying = args.getBoolean("areNotDelaying");
         }
 
-        List<String> stepObs = new ArrayList<>();
+        stepObs = new ArrayList<>();
         stepObs.add(mStep.videoURL);
+        stepObs.add(mStep.thumbnailURL);
         stepObs.add(mStep.description);
 
 
-        StepsAdapter mStepsAdapter = new StepsAdapter(stepObs, getContext());
+        StepsAdapter mStepsAdapter = new StepsAdapter(stepObs, getContext(), areNotDelaying);
         mRecyclerView.setAdapter(mStepsAdapter);
 //        mRecyclerView.getChildAt(0);
 
@@ -202,7 +202,7 @@ public class StepsFragment extends Fragment
 //    @Override
 //    public void onResume() {
 //        super.onResume();
-////        Log.d(TAG, "onResume");
+//        Log.d(TAG, "onResume");
 //    }
 
     @Override
@@ -215,7 +215,7 @@ public class StepsFragment extends Fragment
 //    @Override
 //    public void onPause() {
 //        super.onPause();
-////        Log.d(TAG, "onPause");
+//        Log.d(TAG, "onPause");
 //    }
 
 
@@ -230,6 +230,22 @@ public class StepsFragment extends Fragment
 
     }
 
+    public void initializePlayer(){
+        Log.d(TAG, "initializePlayer: ");
+        if (stepObs != null) {
+            Log.d(TAG, "fragment: " + stepObs.get(0));
+        }
+        if(mRecyclerView != null){
+            Log.d(TAG, "loading: ");
+            RecyclerView.ViewHolder viewHolder = mRecyclerView.getChildViewHolder(mRecyclerView.getChildAt(0));
+            if (viewHolder instanceof VideoViewHolder) {
+                VideoViewHolder videoViewHolder = (VideoViewHolder) viewHolder;
+                videoViewHolder.getPlayerView().getPlayer().prepare(videoViewHolder.getMediaSource());
+
+            }
+        }
+
+    }
 
     private SimpleExoPlayer getExoPlayer(){
         RecyclerView.ViewHolder viewHolder = mRecyclerView.getChildViewHolder(mRecyclerView.getChildAt(0));

@@ -32,7 +32,16 @@ class StepsPagerAdapter extends FragmentStatePagerAdapter{
         return fragment;
     }
 
-//    public Fragment getCurrentFragment() {
+//    @Override
+//    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+//        super.setPrimaryItem(container, position, object);
+//
+//        StepsFragment stepsFragment = (StepsFragment) object;
+//        stepsFragment.initializePlayer();
+//        Log.d(TAG, "setPrimaryItem: ");
+//    }
+
+    //    public Fragment getCurrentFragment() {
 //        return mCurrentFragment;
 //    }
 //    //...

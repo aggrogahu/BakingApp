@@ -3,20 +3,19 @@ package leonard.bakingapp;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
 
-import leonard.bakingapp.classes.viewholders.HeaderHolder;
+import leonard.bakingapp.classes.views.HeaderHolder;
 import leonard.bakingapp.classes.Ingredient;
-import leonard.bakingapp.classes.viewholders.IngredientHolder;
+import leonard.bakingapp.classes.views.IngredientHolder;
 import leonard.bakingapp.classes.Recipe;
 import leonard.bakingapp.classes.Step;
-import leonard.bakingapp.classes.viewholders.StepHolder;
-import leonard.bakingapp.classes.viewholders.SubheaderHolder;
+import leonard.bakingapp.classes.views.StepHolder;
+import leonard.bakingapp.classes.views.SubheaderHolder;
 
 public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private String TAG = RecipeDetailAdapter.class.getSimpleName();

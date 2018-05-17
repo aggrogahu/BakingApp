@@ -1,14 +1,18 @@
 package leonard.bakingapp;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -19,15 +23,17 @@ import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
 import java.util.List;
 
-import leonard.bakingapp.classes.viewholders.ImageHolder;
-import leonard.bakingapp.classes.viewholders.StepHolder;
-import leonard.bakingapp.classes.viewholders.VideoViewHolder;
+import leonard.bakingapp.classes.views.ImageHolder;
+import leonard.bakingapp.classes.views.StepHolder;
+import leonard.bakingapp.classes.views.VideoViewHolder;
 
 public class StepsAdapter extends RecyclerView.Adapter {
     private final String TAG = StepsAdapter.class.getSimpleName();
@@ -37,13 +43,16 @@ public class StepsAdapter extends RecyclerView.Adapter {
     private final int DESCRIPTION = 11;
     private final int VIDEO = 12;
     private final int IMAGE = 13;
-    Context mContext;
+    private final int EMPTY = 69;
+    private boolean areNotDelaying;
+private Context mContext;
 
 
 
-    public StepsAdapter(List<String> strings, Context context){
+    public StepsAdapter(List<String> strings, Context context, Boolean bool){
         mStepObs = strings;
         mContext = context;
+        areNotDelaying = bool;
     }
 
 
@@ -54,20 +63,28 @@ public class StepsAdapter extends RecyclerView.Adapter {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         switch (viewType){
-//            case SHORT_DESCRIPTION:
-//                break;
+            case EMPTY:
+                View emptyView = inflater.inflate(R.layout.empty,parent,false);
+                viewHolder = new RecyclerView.ViewHolder(emptyView) {
+                    @Override
+                    public String toString() {
+                        return super.toString();
+                    }
+                };
+                break;
             case DESCRIPTION:
                 View stepView = inflater.inflate(R.layout.detail_step_item,parent,false);
                 viewHolder = new StepHolder(stepView);
                 break;
             case VIDEO:
+//                Log.d(TAG, "onCreateViewHolder: vid");
                 View videoView = inflater.inflate(R.layout.step_video,parent,false);
                 viewHolder = new VideoViewHolder(videoView);
                 break;
             case IMAGE:
                 //TODO create image holder
                 View imageView = inflater.inflate(R.layout.step_image,parent,false);
-                viewHolder = new VideoViewHolder(imageView);
+                viewHolder = new ImageHolder(imageView);
             default:
                 break;
         }
@@ -84,9 +101,10 @@ public class StepsAdapter extends RecyclerView.Adapter {
             case VIDEO:
                 VideoViewHolder videoViewHolder = (VideoViewHolder) holder;
                 bindVideoHolder(videoViewHolder,position);
+//                holder.itemView.set
                 break;
             case IMAGE:
-                Log.d(TAG, "onBindViewHolder: image");
+//                Log.d(TAG, "onBindViewHolder: image");
                 ImageHolder imageHolder = (ImageHolder) holder;
                 bindImageHolder(imageHolder,position);
             default:
@@ -104,25 +122,61 @@ public class StepsAdapter extends RecyclerView.Adapter {
         stepHolder.setShortDescription(shortDes);
     }
     private void bindVideoHolder(VideoViewHolder videoViewHolder,int position){
+//        Log.d(TAG, "bindVideoHolder: ");
         // Create an instance of the ExoPlayer.
         TrackSelector trackSelector = new DefaultTrackSelector();
         LoadControl loadControl = new DefaultLoadControl();
         SimpleExoPlayer mExoPlayer = ExoPlayerFactory.newSimpleInstance(mContext, trackSelector, loadControl);
-        videoViewHolder.getPlayerView().setPlayer(mExoPlayer);
+        SimpleExoPlayerView simpleExoPlayerView = videoViewHolder.getPlayerView();
+        simpleExoPlayerView.setPlayer(mExoPlayer);
 
         // Set the ExoPlayer.EventListener to this activity.
 //        mExoPlayer.addListener(this);
 
-        // Prepare the MediaSource.
+
 //        //TODO pass a cached data source
         String userAgent = Util.getUserAgent(mContext, "BakingApp");
-        Uri mediaUri = Uri.parse(mStepObs.get(position));
+        String url = mStepObs.get(position);
+//        Log.d(TAG, "bindVideoHolder: url = " + url);
+        Uri mediaUri = Uri.parse(url);
+        // create thumbnail
+//        Bitmap bitmap = (url, MediaStore.Images.Thumbnails.MINI_KIND);
+//        simpleExoPlayerView.setDefaultArtwork(bitmap);
+
+        // Prepare the MediaSource.
         MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                 mContext, userAgent), new DefaultExtractorsFactory(), null, null);
-        mExoPlayer.prepare(mediaSource);
-        mExoPlayer.setPlayWhenReady(false);
+        videoViewHolder.setMediaSource(mediaSource);
+//        if(areNotDelaying) {
+            mExoPlayer.prepare(mediaSource);
+//        }
+//        mExoPlayer.setPlayWhenReady(false);
     }
 
+
+//    public Bitmap customCreateVideoThumbnail(String filePath, int kind) {
+//        Bitmap bitmap = null;
+//        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+//
+//            retriever.setDataSource(filePath, new HashMap<String, String>());
+//            bitmap = retriever.getFrameAtTime(-1);
+//
+//        if (bitmap == null) return null;
+//
+//        if (kind == MediaStore.Images.Thumbnails.MINI_KIND) {
+//            // Scale down the bitmap if it's too large.
+//            int width = bitmap.getWidth();
+//            int height = bitmap.getHeight();
+//            int max = Math.max(width, height);
+//            if (max > 512) {
+//                float scale = 512f / max;
+//                int w = Math.round(scale * width);
+//                int h = Math.round(scale * height);
+//                bitmap = Bitmap.createScaledBitmap(bitmap, w, h, true);
+//            }
+//        }
+//        return bitmap;
+//    }
 
     @Override
     public int getItemCount() {
@@ -132,11 +186,12 @@ public class StepsAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
         String item = mStepObs.get(position);
-        Log.d(TAG, "getItemViewType: " + item);
-        if(item.contains(".mp4")){
+        if (item.equals("")) {
+            return EMPTY;
+        }
+        else if(item.contains(".mp4")){
             return VIDEO;
         } else if(item.contains(".jpeg") || item.contains(".jpg") || item.contains(".png")){
-            Log.d(TAG, "getItemViewType: IMAGE");
             return IMAGE;
         } else {
             return DESCRIPTION;

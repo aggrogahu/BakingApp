@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.design.widget.TabLayout;
@@ -57,9 +58,7 @@ public class StepsActivity extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tick_marks);
         tabLayout.setupWithViewPager(mViewPager);
 
-        //begin with the selected step
 
-        mViewPager.setCurrentItem(position);
 
         //set title
         final List<Step> stepList = getIntent().getParcelableArrayListExtra("stepList");
@@ -79,12 +78,14 @@ public class StepsActivity extends AppCompatActivity {
                 Log.d(TAG, "onPageSelected: change to " + position);
 
 //                StepsFragment stepsFragment = (StepsFragment)mStepsPagerAdapter.getItem(position);
-//                stepsFragment.;
+//                stepsFragment.initializePlayer();
 //                stepsFragment.initializePlayer(mSimpleExoPlayer);
 
-//                String tag = "android:switcher:" + mViewPager.getId() + ":" + position;
+//                String tag = "android:switcher:" + R.id.step_pager + ":" + position;
 //                Log.d(TAG, "tag: " + tag);
-//                StepsFragment stepsFragment = (StepsFragment) getSupportFragmentManager().findFragmentByTag(tag);
+//                List<Fragment> fragment = getSupportFragmentManager().getFragments();
+//                fragment.get(0);
+////                stepsFragment.initializePlayer();
 //                SimpleExoPlayerView exoPlayerView = stepsFragment.getView().findViewById(R.id.step_exoPlayerView);
 //                StepsFragment stepsFragment = (StepsFragment) mStepsPagerAdapter.getCurrentFragment();
 //                SimpleExoPlayerView exoPlayerView = stepsFragment.getView().findViewById(R.id.step_exoPlayerView);
@@ -100,13 +101,14 @@ public class StepsActivity extends AppCompatActivity {
             }
         });
 
+        //begin with the selected step
+        mViewPager.setCurrentItem(position);
+
         //set
 
     }
 
     private void updateNavButtons(int position){
-        Log.d(TAG, "updateNavButtons: position" + position);
-        Log.d(TAG, "updateNavButtons: stepLength" + stepLength);
         if(isLandscape){
             if(position==0){
                 rightFAB.setVisibility(View.VISIBLE);
@@ -122,19 +124,17 @@ public class StepsActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy");
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        Log.d(TAG, "onDestroy");
+//    }
 
     public void nextFabButton(View view) {
-        Log.d(TAG, "nextFabButton: ");
         mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
     }
 
     public void previousFabButton(View view) {
-        Log.d(TAG, "previousFabButton: ");
         mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
     }
 

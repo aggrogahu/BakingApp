@@ -95,8 +95,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
             // build step array from object list
             ArrayList<Step> stepList = new ArrayList<Step>();
             stepList.addAll(Arrays.asList(recipe.steps));
-            // dummy step to test image case
-//            stepList.add(new Step("short", "desc", "", "http://i.imgur.com/DvpvklR.png"));
 
             b.putParcelableArrayList("stepList", stepList);
             intent.putExtras(b);
@@ -113,6 +111,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         Bundle arg = new Bundle();
         Recipe recipe = getIntent().getParcelableExtra("recipe");
         arg.putParcelable(StepsFragment.STEP, recipe.steps[position]);
+        arg.putBoolean("areNotDelaying", true);
         stepsFragment.setArguments(arg);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.step_detail_container, stepsFragment)
