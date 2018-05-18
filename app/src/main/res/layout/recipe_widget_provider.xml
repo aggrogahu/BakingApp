@@ -28,3 +28,4 @@
         android:layout_alignParentRight="true" />
 
 </RelativeLayout>
+<!--TODO change these ugly buttons to something better looking-->
