@@ -9,23 +9,21 @@
     android:layout_height="match_parent">
 
 </ViewFlipper>
-    <Button
+    <ImageButton
         android:id="@+id/widget_prev_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/previous_button_text"
+        android:background="@drawable/ic_menu_back"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        />
-    <Button
+        android:layout_toStartOf="@+id/widget_next_button"
+        android:layout_toLeftOf="@+id/widget_next_button" />
+    <ImageButton
         android:id="@+id/widget_next_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/next_button_text"
+        android:background="@drawable/ic_menu_forward"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true" />
 
 </RelativeLayout>
-<!--TODO change these ugly buttons to something better looking-->

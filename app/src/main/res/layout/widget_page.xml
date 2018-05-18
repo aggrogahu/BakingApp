@@ -15,4 +15,9 @@
         android:padding="4dp"
         android:textColor="#FFFFFF"
         tools:text="Recipe Name" />
+
+    <ListView
+        android:id="@+id/widget_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

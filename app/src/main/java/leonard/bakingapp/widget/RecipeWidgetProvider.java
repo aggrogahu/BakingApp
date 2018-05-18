@@ -50,7 +50,7 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     private static RemoteViews getRecipeViews(Context context, int id){
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
 
-        // Set RecipeWdgetService as adapter
+        // Set RecipeWidgetService as adapter
 //        Intent intent = new Intent(context, RecipeWidgetService.class);
 //        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
 //        intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
@@ -104,24 +104,9 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_page);
             remoteViews.setTextViewText(R.id.widget_recipe_name, recipeName);
 
-//            for(int j = 0; j < ingredients.length;j++) {
-//                RemoteViews ingredientRv = new RemoteViews(context.getPackageName(), R.layout.widget_ingredient);
-//                String m = ingredients[1].measure.toLowerCase();
-//                if (m.equals("unit")) {
-//                    m = "";
-//                }
-//                ingredientRv.setTextViewText(R.id.widget_ingredient_text_view, ingredients[1].ingredient);
-//                ingredientRv.setTextViewText(R.id.widget_measure_text_view, ingredients[1].quantity + " " + m);
-
             for (Ingredient ingredient : ingredients) {
-
-//                RemoteViews textView = new RemoteViews(context.getPackageName(), R.layout.step_short_desc);
-//                textView.setTextViewText(R.id.short_desc_text_view, "TextView number " + String.valueOf(i));
-//                remoteViews.addView(R.id.widget_page_linear_layout, textView);
                 remoteViews.addView(R.id.widget_page_linear_layout, addIngredient(context, ingredient));
             }
-//            remoteViews.addView(R.id.widget_page_linear_layout, addIngredient(context,ingredients[1]));
-//            }
 
             views.addView(R.id.recipe_view_flipper,remoteViews);
         }
