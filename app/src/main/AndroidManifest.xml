@@ -25,16 +25,31 @@
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".RecipeActivity"/>
+                android:value=".RecipeActivity" />
         </activity>
         <activity android:name=".StepsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".RecipeDetailActivity"/>
+                android:value=".RecipeDetailActivity" />
         </activity>
+        <service android:name=".widget.RecipeWidgetService"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
         <provider
+            android:name=".data.RecipeContentProvider"
             android:authorities="recipe_provider.authority"
-            android:name=".data.RecipeContentProvider"/>
+            android:exported="false" />
+
+        <receiver android:name=".widget.RecipeWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/recipe_widget_provider_info" />
+        </receiver>
     </application>
 
 </manifest>
