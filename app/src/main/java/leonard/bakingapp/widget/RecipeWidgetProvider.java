@@ -35,20 +35,22 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         RemoteViews rv = getRecipeViews(context, appWidgetId);
 
         // Instruct the widget manager to update the widget
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_list_view);
         appWidgetManager.updateAppWidget(appWidgetId, rv);
     }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
-//        Debug.waitForDebugger();
+        Debug.waitForDebugger();
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
     }
 
     private static RemoteViews getRecipeViews(Context context, int id){
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
+//        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_page);
 
         // Set RecipeWidgetService as adapter
 //        Intent intent = new Intent(context, RecipeWidgetService.class);
@@ -61,25 +63,25 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
 //        PendingIntent appPendingIntent = PendingIntent.getActivity(context, 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 //        views.setPendingIntentTemplate(R.id.recipe_view_flipper, appPendingIntent);
 
-        // Bind the click intent for the next button on the widget
-        final Intent nextIntent = new Intent(context,
-                RecipeWidgetProvider.class);
-        nextIntent.setAction(RecipeWidgetProvider.NEXT_ACTION);
-        nextIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
-        final PendingIntent nextPendingIntent = PendingIntent
-                .getBroadcast(context, 0, nextIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
-        views.setOnClickPendingIntent(R.id.widget_next_button, nextPendingIntent);
-
-        // Bind the click intent for the next button on the widget
-        final Intent prevIntent = new Intent(context,
-                RecipeWidgetProvider.class);
-        prevIntent.setAction(RecipeWidgetProvider.PREVIOUS_ACTION);
-        prevIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
-        final PendingIntent prevPendingIntent = PendingIntent
-                .getBroadcast(context, 0, prevIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
-        views.setOnClickPendingIntent(R.id.widget_prev_button, prevPendingIntent);
+//        // Bind the click intent for the next button on the widget
+//        final Intent nextIntent = new Intent(context,
+//                RecipeWidgetProvider.class);
+//        nextIntent.setAction(RecipeWidgetProvider.NEXT_ACTION);
+//        nextIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
+//        final PendingIntent nextPendingIntent = PendingIntent
+//                .getBroadcast(context, 0, nextIntent,
+//                        PendingIntent.FLAG_UPDATE_CURRENT);
+//        views.setOnClickPendingIntent(R.id.widget_next_button, nextPendingIntent);
+//
+//        // Bind the click intent for the next button on the widget
+//        final Intent prevIntent = new Intent(context,
+//                RecipeWidgetProvider.class);
+//        prevIntent.setAction(RecipeWidgetProvider.PREVIOUS_ACTION);
+//        prevIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
+//        final PendingIntent prevPendingIntent = PendingIntent
+//                .getBroadcast(context, 0, prevIntent,
+//                        PendingIntent.FLAG_UPDATE_CURRENT);
+//        views.setOnClickPendingIntent(R.id.widget_prev_button, prevPendingIntent);
 
         // get cursor
         Cursor mCursor = context.getContentResolver().query(
@@ -88,28 +90,46 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
                 null,
                 null,
                 null
-        );
+        );//content://recipe_provider.authority/recipe
 
-        for (int i = 0; i < mCursor.getCount(); i++){
+//        for (int i = 0; i < mCursor.getCount(); i++){
             // retrieve recipe
-            mCursor.moveToPosition(i);
+            mCursor.moveToPosition(1);
             String recipeName = mCursor.getString(mCursor.getColumnIndex("col_recipe"));
 
             // convert json to Ingredient array
-            Gson gson = new Gson();
-            String ingredientJson = mCursor.getString(mCursor.getColumnIndex("col_ingredients"));
-            Ingredient[] ingredients = gson.fromJson(ingredientJson, Ingredient[].class);
+//            Gson gson = new Gson();
+//            String ingredientJson = mCursor.getString(mCursor.getColumnIndex("col_ingredients"));
+//            Ingredient[] ingredients = gson.fromJson(ingredientJson, Ingredient[].class);
+
+            views.setTextViewText(R.id.widget_recipe_name, recipeName);
+            // Set the RecipeWidgetService intent to act as the adapter for the ListView
+            Intent intent = new Intent(context, RecipeWidgetService.class);
+            views.setRemoteAdapter(R.id.widget_list_view, intent);
 
             // place contents into page
-            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_page);
-            remoteViews.setTextViewText(R.id.widget_recipe_name, recipeName);
+//            RemoteViews remoteViewPage = new RemoteViews(context.getPackageName(), R.layout.widget_page);
+//            remoteViewPage.setTextViewText(R.id.widget_recipe_name, recipeName);
+//
+//            // Set the RecipeWidgetService intent to act as the adapter for the ListView
+//            Intent intent = new Intent(context, RecipeWidgetService.class);
+//            remoteViewPage.setRemoteAdapter(R.id.widget_list_view, intent);
 
-            for (Ingredient ingredient : ingredients) {
-                remoteViews.addView(R.id.widget_page_linear_layout, addIngredient(context, ingredient));
-            }
 
-            views.addView(R.id.recipe_view_flipper,remoteViews);
-        }
+
+//        RemoteViews test = new RemoteViews(context.getPackageName(), R.layout.step_short_desc);
+//        test.setTextViewText(R.id.short_desc_text_view,"position:");
+//        remoteViewPage.addView(R.id.widget_page_linear_layout,test);
+
+            // brute force adding to linearlayout // delete this code once list view is working
+//            for (Ingredient ingredient : ingredients) {
+//                remoteViewPage.addView(R.id.widget_page_linear_layout, addIngredient(context, ingredient));
+//            }
+
+
+
+//            views.addView(R.id.recipe_view_flipper,remoteViewPage);
+//        }
 
 
 

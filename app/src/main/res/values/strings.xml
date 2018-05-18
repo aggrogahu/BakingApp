@@ -8,4 +8,6 @@
     <string name="previous_step_button_str">Previous Step</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="cd_previous_button">Previous Button</string>
+    <string name="cd_next_button">Next Button</string>
 </resources>

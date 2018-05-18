@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="leonard.bakingapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -10,7 +11,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="ExtraText">
         <activity
             android:name=".RecipeActivity"
             android:launchMode="singleTop">
@@ -33,13 +35,12 @@
                 android:value=".RecipeDetailActivity" />
         </activity>
         <service android:name=".widget.RecipeWidgetService"
-            android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <provider
             android:name=".data.RecipeContentProvider"
             android:authorities="recipe_provider.authority"
-            android:exported="false" />
+            android:exported="true"/>
 
         <receiver android:name=".widget.RecipeWidgetProvider">
             <intent-filter>
