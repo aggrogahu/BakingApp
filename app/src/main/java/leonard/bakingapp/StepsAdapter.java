@@ -36,15 +36,15 @@ import leonard.bakingapp.classes.views.StepHolder;
 import leonard.bakingapp.classes.views.VideoViewHolder;
 
 public class StepsAdapter extends RecyclerView.Adapter {
-    private final String TAG = StepsAdapter.class.getSimpleName();
+//    private final String TAG = StepsAdapter.class.getSimpleName();
     private List<String> mStepObs;
-    private SimpleExoPlayer mSimpleExoPlayer;
+//    private SimpleExoPlayer mSimpleExoPlayer;
 //    private final int SHORT_DESCRIPTION = 10;
     private final int DESCRIPTION = 11;
     private final int VIDEO = 12;
     private final int IMAGE = 13;
     private final int EMPTY = 69;
-    private boolean areNotDelaying;
+    private boolean areNotDelaying; // functionality is not yet implemented
 private Context mContext;
 
 
@@ -77,12 +77,11 @@ private Context mContext;
                 viewHolder = new StepHolder(stepView);
                 break;
             case VIDEO:
-//                Log.d(TAG, "onCreateViewHolder: vid");
                 View videoView = inflater.inflate(R.layout.step_video,parent,false);
                 viewHolder = new VideoViewHolder(videoView);
                 break;
             case IMAGE:
-                //TODO create image holder
+                // original Json doesn't have a images but this handles images if it did
                 View imageView = inflater.inflate(R.layout.step_image,parent,false);
                 viewHolder = new ImageHolder(imageView);
             default:
@@ -101,10 +100,8 @@ private Context mContext;
             case VIDEO:
                 VideoViewHolder videoViewHolder = (VideoViewHolder) holder;
                 bindVideoHolder(videoViewHolder,position);
-//                holder.itemView.set
                 break;
             case IMAGE:
-//                Log.d(TAG, "onBindViewHolder: image");
                 ImageHolder imageHolder = (ImageHolder) holder;
                 bindImageHolder(imageHolder,position);
             default:
@@ -122,7 +119,6 @@ private Context mContext;
         stepHolder.setShortDescription(shortDes);
     }
     private void bindVideoHolder(VideoViewHolder videoViewHolder,int position){
-//        Log.d(TAG, "bindVideoHolder: ");
         // Create an instance of the ExoPlayer.
         TrackSelector trackSelector = new DefaultTrackSelector();
         LoadControl loadControl = new DefaultLoadControl();
@@ -137,11 +133,7 @@ private Context mContext;
 //        //TODO pass a cached data source
         String userAgent = Util.getUserAgent(mContext, "BakingApp");
         String url = mStepObs.get(position);
-//        Log.d(TAG, "bindVideoHolder: url = " + url);
         Uri mediaUri = Uri.parse(url);
-        // create thumbnail
-//        Bitmap bitmap = (url, MediaStore.Images.Thumbnails.MINI_KIND);
-//        simpleExoPlayerView.setDefaultArtwork(bitmap);
 
         // Prepare the MediaSource.
         MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
@@ -152,31 +144,6 @@ private Context mContext;
 //        }
 //        mExoPlayer.setPlayWhenReady(false);
     }
-
-
-//    public Bitmap customCreateVideoThumbnail(String filePath, int kind) {
-//        Bitmap bitmap = null;
-//        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-//
-//            retriever.setDataSource(filePath, new HashMap<String, String>());
-//            bitmap = retriever.getFrameAtTime(-1);
-//
-//        if (bitmap == null) return null;
-//
-//        if (kind == MediaStore.Images.Thumbnails.MINI_KIND) {
-//            // Scale down the bitmap if it's too large.
-//            int width = bitmap.getWidth();
-//            int height = bitmap.getHeight();
-//            int max = Math.max(width, height);
-//            if (max > 512) {
-//                float scale = 512f / max;
-//                int w = Math.round(scale * width);
-//                int h = Math.round(scale * height);
-//                bitmap = Bitmap.createScaledBitmap(bitmap, w, h, true);
-//            }
-//        }
-//        return bitmap;
-//    }
 
     @Override
     public int getItemCount() {
@@ -197,8 +164,8 @@ private Context mContext;
             return DESCRIPTION;
         }
     }
-
-    private void initializeMediaSession(){}
-
-    private void initializeExoPlayer(){ }
+//
+//    private void initializeMediaSession(){}
+//
+//    private void initializeExoPlayer(){ }
 }

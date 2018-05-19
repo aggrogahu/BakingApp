@@ -43,7 +43,7 @@
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <provider
-            android:name=".data.RecipeContentProvider"
+            android:name=".database.RecipeContentProvider"
             android:authorities="recipe_provider.authority"
             android:exported="true"/>
 

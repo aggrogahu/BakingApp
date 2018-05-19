@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import leonard.bakingapp.R;
-import leonard.bakingapp.data.RecipeTable;
+import leonard.bakingapp.database.RecipeTable;
 
 public class RecipeWidgetConfigure extends AppCompatActivity {
     private static final String RECIPE_INDEX_KEY = "recipe_index";
@@ -46,6 +46,7 @@ public class RecipeWidgetConfigure extends AppCompatActivity {
             finish();
         }
 
+        // populate list view with recipes save in the database
         mListView = findViewById(R.id.config_list_view);
         Cursor c = getContentResolver().query(
                 RecipeTable.CONTENT_URI,
@@ -64,17 +65,17 @@ public class RecipeWidgetConfigure extends AppCompatActivity {
         }
 
         mListView.setAdapter(new ArrayAdapter<String>(this,R.layout.config_text_layout,recipes));
+
+        //  Save the chosen recipe and launch the app widget
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final Context context = RecipeWidgetConfigure.this;
 
-                // When the button is clicked, save the string in our prefs and return that they
-                // clicked OK.
-//                String titlePrefix = mAppWidgetPrefix.getText().toString();
+                // save chosen recipe
                 saveRecipe(context, mAppWidgetId, position);
 
-                // Push widget update to surface with newly set prefix
+                // widget update
                 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
                 RecipeWidgetProvider.updateAppWidget(context, appWidgetManager,
                         mAppWidgetId, position);
@@ -90,12 +91,24 @@ public class RecipeWidgetConfigure extends AppCompatActivity {
 
     }
 
+    /**
+     *  Save the chosen recipe to display in the widget to preferences
+     * @param context activity context
+     * @param appWidgetId app widget ID
+     * @param index  index of the recipe to be saved
+     */
     static void saveRecipe(Context context, int appWidgetId, int index) {
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
         prefs.putInt(RECIPE_INDEX_KEY + appWidgetId, index);
-        prefs.commit();
+        prefs.apply();
     }
 
+    /**
+     * get the index of the chosen recipe from preferences
+     * @param context activity context
+     * @param appWidgetId happy widget ID
+     * @return index of the recipe to be saved
+     */
     static int loadPrefRecipeIndex(Context context, int appWidgetId){
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
         return prefs.getInt(RECIPE_INDEX_KEY + appWidgetId, 0);

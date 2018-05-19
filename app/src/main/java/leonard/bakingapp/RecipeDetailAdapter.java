@@ -18,28 +18,22 @@ import leonard.bakingapp.classes.views.StepHolder;
 import leonard.bakingapp.classes.views.SubheaderHolder;
 
 public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private String TAG = RecipeDetailAdapter.class.getSimpleName();
+//    private String TAG = RecipeDetailAdapter.class.getSimpleName();
     private List<Object> mDetailList;
     private final int HEADER = 0;
     private final int SUBHEADER = 1;
     private final int INGREDIENT = 2;
     private final int STEP = 3;
     private int selectedPosition;
-    private boolean mTwoPane;
     private Recipe mRecipe;
-    Context mContext;
-    RecipeDetailFragment.OnStepClickListener mCallback;
-//
-//    public interface OnStepClickListener{
-//        void onStepSelected(int position);
-//    }
+    private Context mContext;
+    private RecipeDetailFragment.OnStepClickListener mCallback;
 
     public RecipeDetailAdapter(List<Object> list, Context context, RecipeDetailFragment.OnStepClickListener listener, Recipe recipe, int selected){
         mDetailList = list;
         mContext = context;
         mCallback = listener;
         mRecipe = recipe;
-//        mTwoPane =
         selectedPosition = selected;
     }
 
@@ -91,12 +85,16 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             case STEP:
                 final StepHolder stepHolder = (StepHolder) holder;
                 bindStepHolder(stepHolder,position);
+                //
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
+                        // Boolean "selecting" is true if recipe detail activity is a 2 pane display
+                        // and if the currently selected view should be highlighted
                         boolean selecting = mCallback.onStepSelected(position, mRecipe);
                         if (selecting){
+                            //  update the newly selected item
                             notifyItemChanged(selectedPosition);
                             selectedPosition = stepHolder.getLayoutPosition();
                             notifyItemChanged(selectedPosition);

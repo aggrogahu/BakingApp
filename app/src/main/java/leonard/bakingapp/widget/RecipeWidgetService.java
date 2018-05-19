@@ -4,9 +4,6 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Build;
-import android.os.Debug;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -14,7 +11,7 @@ import com.google.gson.Gson;
 
 import leonard.bakingapp.R;
 import leonard.bakingapp.classes.Ingredient;
-import leonard.bakingapp.data.RecipeTable;
+import leonard.bakingapp.database.RecipeTable;
 
 public class RecipeWidgetService extends RemoteViewsService {
     @Override
@@ -25,11 +22,11 @@ public class RecipeWidgetService extends RemoteViewsService {
 
 class RecipeRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
-    private final String TAG = RecipeRemoteViewsFactory.class.getSimpleName();
-    Context mContext;
-    Cursor mCursor;
-    Ingredient[] ingredients;
-        private int mInstanceId = AppWidgetManager.INVALID_APPWIDGET_ID;
+//    private final String TAG = RecipeRemoteViewsFactory.class.getSimpleName();
+    private Context mContext;
+    private Cursor mCursor;
+    private Ingredient[] ingredients;
+        private int mInstanceId;
 
     public RecipeRemoteViewsFactory(Context applicationContext, Intent intent) {
         mContext = applicationContext;
@@ -43,6 +40,7 @@ class RecipeRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory 
 
     @Override
     public void onDataSetChanged() {
+        // get cursor
         if (mCursor != null) mCursor.close();
         mCursor = mContext.getContentResolver().query(
                 RecipeTable.CONTENT_URI,
@@ -54,6 +52,7 @@ class RecipeRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory 
         if (mInstanceId >= 0){
             mCursor.moveToPosition(RecipeWidgetConfigure.loadPrefRecipeIndex(mContext,mInstanceId));
         }
+        // get ingredients json from the cursor and convert to array
         Gson gson = new Gson();
         String ingredientJson = mCursor.getString(mCursor.getColumnIndex("col_ingredients"));
         ingredients = gson.fromJson(ingredientJson, Ingredient[].class);
@@ -62,7 +61,7 @@ class RecipeRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory 
 
     @Override
     public void onDestroy() {
-//        mCursor.close();
+        mCursor.close();
     }
 
     @Override
@@ -73,8 +72,8 @@ class RecipeRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory 
 
     @Override
     public RemoteViews getViewAt(int position) {
+        // return a remote view with an ingredient in it
         if (mCursor == null || mCursor.getCount() == 0) {
-            Log.d(TAG, "getViewAt: null " );
             return null;
         }
         mCursor.moveToPosition(position);
@@ -87,13 +86,10 @@ class RecipeRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory 
         String ingredientString = ingredient.ingredient;
 
             RemoteViews ingredientRv = new RemoteViews(mContext.getPackageName(), R.layout.widget_ingredient);
-//        ingredientRv.setTextViewText(R.id.short_desc_text_view,ingredient.ingredient);
 
             ingredientRv.setTextViewText(R.id.widget_ingredient_text_view, ingredientString);
             ingredientRv.setTextViewText(R.id.widget_measure_text_view,measure);
             return ingredientRv;
-
-//        return null;
     }
 
     @Override

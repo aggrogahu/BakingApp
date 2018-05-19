@@ -1,4 +1,4 @@
-package leonard.bakingapp.data;
+package leonard.bakingapp.database;
 
 import ckm.simple.sql_provider.UpgradeScript;
 import ckm.simple.sql_provider.annotation.ProviderConfig;
