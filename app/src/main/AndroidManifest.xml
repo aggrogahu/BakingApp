@@ -34,6 +34,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".RecipeDetailActivity" />
         </activity>
+        <activity android:name=".widget.RecipeWidgetConfigure">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
         <service android:name=".widget.RecipeWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 

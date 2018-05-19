@@ -26,13 +26,13 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     public static final String PREVIOUS_ACTION = "leonard.bakingapp.action.show_previous";
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+                                int appWidgetId, int index) {
 
         CharSequence widgetText = context.getString(R.string.appwidget_text);
         // Construct the RemoteViews object
 //        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
 //        views.setTextViewText(R.id.appwidget_text, widgetText);
-        RemoteViews rv = getRecipeViews(context, appWidgetId);
+        RemoteViews rv = getRecipeViews(context, index, appWidgetId);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_list_view);
@@ -42,13 +42,14 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
-        Debug.waitForDebugger();
+//        Debug.waitForDebugger();
         for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
+            int mIndex = RecipeWidgetConfigure.loadPrefRecipeIndex(context, appWidgetId);
+            updateAppWidget(context, appWidgetManager, appWidgetId, mIndex);
         }
     }
 
-    private static RemoteViews getRecipeViews(Context context, int id){
+    private static RemoteViews getRecipeViews(Context context, int index, int appWidgetId){
 //        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_page);
 
@@ -94,7 +95,7 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
 
 //        for (int i = 0; i < mCursor.getCount(); i++){
             // retrieve recipe
-            mCursor.moveToPosition(1);
+            mCursor.moveToPosition(index);
             String recipeName = mCursor.getString(mCursor.getColumnIndex("col_recipe"));
 
             // convert json to Ingredient array
@@ -105,6 +106,7 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
             views.setTextViewText(R.id.widget_recipe_name, recipeName);
             // Set the RecipeWidgetService intent to act as the adapter for the ListView
             Intent intent = new Intent(context, RecipeWidgetService.class);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             views.setRemoteAdapter(R.id.widget_list_view, intent);
 
             // place contents into page
@@ -167,28 +169,28 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         // Enter relevant functionality for when the last widget is disabled
     }
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        super.onReceive(context, intent);
-        final String action = intent.getAction();
-        if (action.equals(NEXT_ACTION)) {
-            RemoteViews rv = new RemoteViews(context.getPackageName(),
-                    R.layout.recipe_widget_provider);
-
-            rv.showNext(R.id.recipe_view_flipper);
-
-
-            AppWidgetManager.getInstance(context).updateAppWidget(new ComponentName(context,RecipeWidgetProvider.class), rv);
-        }
-        if (action.equals(PREVIOUS_ACTION)) {
-            RemoteViews rv = new RemoteViews(context.getPackageName(),
-                    R.layout.recipe_widget_provider);
-
-            rv.showPrevious(R.id.recipe_view_flipper);
-
-            AppWidgetManager.getInstance(context).updateAppWidget(new ComponentName(context,RecipeWidgetProvider.class), rv);
-        }
-    }
+//    @Override
+//    public void onReceive(Context context, Intent intent) {
+//        super.onReceive(context, intent);
+//        final String action = intent.getAction();
+//        if (action.equals(NEXT_ACTION)) {
+//            RemoteViews rv = new RemoteViews(context.getPackageName(),
+//                    R.layout.recipe_widget_provider);
+//
+//            rv.showNext(R.id.recipe_view_flipper);
+//
+//
+//            AppWidgetManager.getInstance(context).updateAppWidget(new ComponentName(context,RecipeWidgetProvider.class), rv);
+//        }
+//        if (action.equals(PREVIOUS_ACTION)) {
+//            RemoteViews rv = new RemoteViews(context.getPackageName(),
+//                    R.layout.recipe_widget_provider);
+//
+//            rv.showPrevious(R.id.recipe_view_flipper);
+//
+//            AppWidgetManager.getInstance(context).updateAppWidget(new ComponentName(context,RecipeWidgetProvider.class), rv);
+//        }
+//    }
 
 }
 

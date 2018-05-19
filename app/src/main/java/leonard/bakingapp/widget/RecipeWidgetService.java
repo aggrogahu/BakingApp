@@ -18,7 +18,7 @@ import leonard.bakingapp.data.RecipeTable;
 public class RecipeWidgetService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new RecipeRemoteViewsFactory(this.getApplicationContext());
+        return new RecipeRemoteViewsFactory(this.getApplicationContext(), intent);
     }
 }
 
@@ -28,11 +28,11 @@ class RecipeRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory 
     Context mContext;
     Cursor mCursor;
     Ingredient[] ingredients;
-//        private int mInstanceId = AppWidgetManager.INVALID_APPWIDGET_ID;
+        private int mInstanceId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
-    public RecipeRemoteViewsFactory(Context applicationContext) {
+    public RecipeRemoteViewsFactory(Context applicationContext, Intent intent) {
         mContext = applicationContext;
-//            mInstanceId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+            mInstanceId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
     }
 
     @Override
@@ -50,7 +50,9 @@ class RecipeRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory 
                 null,
                 null
         );
-        mCursor.moveToPosition(1);
+        if (mInstanceId >= 0){
+            mCursor.moveToPosition(RecipeWidgetConfigure.loadPrefRecipeIndex(mContext,mInstanceId));
+        }
         Gson gson = new Gson();
         String ingredientJson = mCursor.getString(mCursor.getColumnIndex("col_ingredients"));
         ingredients = gson.fromJson(ingredientJson, Ingredient[].class);
