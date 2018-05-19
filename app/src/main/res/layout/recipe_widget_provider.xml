@@ -1,0 +1,31 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:padding="@dimen/widget_margin">
+<ViewFlipper
+    android:id="@+id/recipe_view_flipper"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+</ViewFlipper>
+    <ImageButton
+        android:id="@+id/widget_prev_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_menu_back"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/widget_next_button"
+        android:layout_toLeftOf="@+id/widget_next_button"
+        android:contentDescription="@string/cd_previous_button" />
+    <ImageButton
+        android:id="@+id/widget_next_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_menu_forward"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:contentDescription="@string/cd_next_button" />
+
+</RelativeLayout>

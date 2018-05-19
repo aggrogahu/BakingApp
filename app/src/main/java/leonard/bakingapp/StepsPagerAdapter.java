@@ -14,8 +14,7 @@ import leonard.bakingapp.classes.Step;
 
 class StepsPagerAdapter extends FragmentStatePagerAdapter{
     private final String TAG = StepsAdapter.class.getSimpleName();
-    List<Step> mStepList;
-//    private Fragment mCurrentFragment;
+    private List<Step> mStepList;
 
     public StepsPagerAdapter(FragmentManager fm, List<Step> stepList) {
         super(fm);
@@ -24,6 +23,7 @@ class StepsPagerAdapter extends FragmentStatePagerAdapter{
 
     @Override
     public Fragment getItem(int position) {
+        // initialize and return step fragment
         Fragment fragment = new StepsFragment();
         Bundle args = new Bundle();
         args.putInt(StepsFragment.ARG_OBJECT, position + 1);
@@ -31,19 +31,6 @@ class StepsPagerAdapter extends FragmentStatePagerAdapter{
         fragment.setArguments(args);
         return fragment;
     }
-
-//    public Fragment getCurrentFragment() {
-//        return mCurrentFragment;
-//    }
-//    //...
-//    @Override
-//    public void setPrimaryItem(ViewGroup container, int position, Object object) {
-//        Log.d(TAG, "setPrimaryItem: ");
-////        if (getCurrentFragment() != object) {
-//            mCurrentFragment = ((Fragment) object);
-////        }
-//        super.setPrimaryItem(container, position, object);
-//    }
 
     @Override
     public int getCount() {

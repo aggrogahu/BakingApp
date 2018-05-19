@@ -17,25 +17,15 @@ import java.util.List;
 import leonard.bakingapp.classes.Recipe;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.CardViewHolder> {
-//    private List<String> mRecipeList;
     private Context mContext;
     private List<Recipe> mRecipes;
 
     RecipeAdapter(List<Recipe> recipes, Context context){
-        Log.d("TAG", "constructor: ");
-//        mRecipes = recipes;
+        //  set up recipe list or initialize an empty list
         if (recipes != null) {
             mRecipes = recipes;
-//            int length = mRecipes.size();
-//            mRecipeList = new ArrayList<>();
-//             for (int i = 0; i < length; i++){
-//
-//                 mRecipeList.add(mRecipes.get(i).name);
-//             }
-//            mRecipeList = recipes;
         }
         else {
-            Log.d("TAG", "null");
             mRecipes = new ArrayList<>();
         }
         mContext = context;
@@ -63,13 +53,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.CardViewHo
     public void onBindViewHolder(@NonNull CardViewHolder holder, final int position) {
         holder.mRecipeName.setText(mRecipes.get(position).name);
 
+        // set on click listener to launch the recipe detail activity
         final Intent intent = new Intent(mContext, RecipeDetailActivity.class);
         intent.putExtra("recipe", mRecipes.get(position));
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                mOnRecipeCardClickListener.onCardSelected(position);
-//                Toast.makeText(mContext, "Item Clicked: " + mRecipeList.get(position), Toast.LENGTH_LONG).show();
                 mContext.startActivity(intent);
 
             }

@@ -18,9 +18,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import leonard.bakingapp.classes.Recipe;
+import leonard.bakingapp.classes.Step;
 
 public class RecipeDetailFragment extends Fragment {
-    private final String TAG = RecipeDetailFragment.class.getSimpleName();
+//    private final String TAG = RecipeDetailFragment.class.getSimpleName();
 
     OnStepClickListener mCallback;
     private Recipe mRecipe;
@@ -53,20 +54,16 @@ public class RecipeDetailFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        return super.onCreateView(inflater, container, savedInstanceState);
 
         final View rootView = inflater.inflate(R.layout.fragment_recipe_detail, container, false);
-
         RecyclerView mRecyclerView = rootView.findViewById(R.id.recipe_detail_recycler_view);
-
         mRecyclerView.setHasFixedSize(true);
 
 
 
         mLinearLayoutManager = new LinearLayoutManager(getContext());
         //read data from recipe array
-        //load saved instancestate
-//        selected = RecyclerView.NO_POSITION;
+        //load saved instance state
         int selected;
         if (savedInstanceState == null) {
 
@@ -74,14 +71,16 @@ public class RecipeDetailFragment extends Fragment {
             Bundle args = getArguments();
             assert args != null;
             mRecipe = (Recipe) args.get("recipe");
+            // injecting dummy step to test image loading
+            // mRecipe.steps[mRecipe.steps.length-1] = new Step("short", "desc", "", "http://i.imgur.com/DvpvklR.png");
             selected = args.getInt(SELECTED);
 
 
         } else {
-            Log.d(TAG, "onCreateView: restoring");
             mLinearLayoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(LAYOUT_MANAGER));
             mRecyclerView.setLayoutManager(mLinearLayoutManager);
             mRecipe = savedInstanceState.getParcelable(RECIPE);
+            //  restore the highlighted step
             selected = savedInstanceState.getInt(CURRENT_SELECTED);
         }
         List<Object> mDetailList = buildRecipeObjectList();
@@ -93,6 +92,10 @@ public class RecipeDetailFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     *   put all recipe data into a mixed object list so that it's easier for the recyclerview
+     * @return  mixed object list that contains data from the recipe
+     */
     private List<Object> buildRecipeObjectList() {
         ArrayList<Object> detailsList = new ArrayList<>();
         detailsList.add(mRecipe.name);
@@ -106,7 +109,6 @@ public class RecipeDetailFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.d(TAG, "onSaveInstanceState!!!");
         outState.putParcelable(RECIPE, mRecipe);
         outState.putInt(CURRENT_SELECTED, mRecipeDetailAdapter.getSelectedPosition());
         outState.putParcelable(LAYOUT_MANAGER, mLinearLayoutManager.onSaveInstanceState());

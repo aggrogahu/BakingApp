@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.design.widget.TabLayout;
@@ -15,7 +16,7 @@ import java.util.List;
 import leonard.bakingapp.classes.Step;
 
 public class StepsActivity extends AppCompatActivity {
-    private static final String TAG = StepsActivity.class.getSimpleName();
+//    private static final String TAG = StepsActivity.class.getSimpleName();
     StepsPagerAdapter mStepsPagerAdapter;
     ViewPager mViewPager;
     private FloatingActionButton rightFAB, leftFAB;
@@ -57,9 +58,7 @@ public class StepsActivity extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tick_marks);
         tabLayout.setupWithViewPager(mViewPager);
 
-        //begin with the selected step
 
-        mViewPager.setCurrentItem(position);
 
         //set title
         final List<Step> stepList = getIntent().getParcelableArrayListExtra("stepList");
@@ -75,16 +74,12 @@ public class StepsActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                //TODO initialize and set exoplayer to exoplayer view. Use only one instance of exoplayer to increase performance
-                Log.d(TAG, "onPageSelected: change to " + position);
+                //TODO initialize and set exoplayer to exoplayer view-- use only one instance of exoplayer to increase performance
 
 //                StepsFragment stepsFragment = (StepsFragment)mStepsPagerAdapter.getItem(position);
-//                stepsFragment.;
+//                stepsFragment.initializePlayer();
 //                stepsFragment.initializePlayer(mSimpleExoPlayer);
 
-//                String tag = "android:switcher:" + mViewPager.getId() + ":" + position;
-//                Log.d(TAG, "tag: " + tag);
-//                StepsFragment stepsFragment = (StepsFragment) getSupportFragmentManager().findFragmentByTag(tag);
 //                SimpleExoPlayerView exoPlayerView = stepsFragment.getView().findViewById(R.id.step_exoPlayerView);
 //                StepsFragment stepsFragment = (StepsFragment) mStepsPagerAdapter.getCurrentFragment();
 //                SimpleExoPlayerView exoPlayerView = stepsFragment.getView().findViewById(R.id.step_exoPlayerView);
@@ -100,13 +95,16 @@ public class StepsActivity extends AppCompatActivity {
             }
         });
 
-        //set
+        //begin with the selected step
+        mViewPager.setCurrentItem(position);
 
     }
 
+    /**
+     * high visibility of the navigation buttons according to position in the viewpager
+     * @param position  position in the viewpager
+     */
     private void updateNavButtons(int position){
-        Log.d(TAG, "updateNavButtons: position" + position);
-        Log.d(TAG, "updateNavButtons: stepLength" + stepLength);
         if(isLandscape){
             if(position==0){
                 rightFAB.setVisibility(View.VISIBLE);
@@ -121,20 +119,11 @@ public class StepsActivity extends AppCompatActivity {
         }
     }
 
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy");
-    }
-
     public void nextFabButton(View view) {
-        Log.d(TAG, "nextFabButton: ");
         mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
     }
 
     public void previousFabButton(View view) {
-        Log.d(TAG, "previousFabButton: ");
         mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
     }
 
@@ -144,12 +133,4 @@ public class StepsActivity extends AppCompatActivity {
 ////        stepsFragment.getPlayerView();
 //    }
 
-//    private List<Step> getStepArrayList(){
-//        return new ArrayList<Step>(){{
-//            add(new Step("Short Desc 01", "description", "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd974_-intro-creampie/-intro-creampie.mp4", null));
-//            add(new Step("Short Desc 02", "description", "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd9a6_2-mix-sugar-crackers-creampie/2-mix-sugar-crackers-creampie.mp4", null));
-//            add(new Step("Short Desc 03", "description", "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd9a6_2-mix-sugar-crackers-creampie/2-mix-sugar-crackers-creampie.mp4", null));
-//            add(new Step("Short Desc 04", "description", "URL", null));
-//        }};
-//    }
 }

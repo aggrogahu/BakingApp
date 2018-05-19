@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.media.session.MediaSessionCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,31 +11,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import leonard.bakingapp.classes.Step;
-import leonard.bakingapp.classes.viewholders.VideoViewHolder;
+import leonard.bakingapp.classes.views.VideoViewHolder;
 
-public class StepsFragment extends Fragment
-//        implements ExoPlayer.EventListener
-{
+public class StepsFragment extends Fragment {
     public static final String STEP = "step";
-//    public static final String LIST_INDEX = "list_index";
     public static final String ARG_OBJECT = "object";
     private static final String TAG = StepsFragment.class.getSimpleName();
 //    private SimpleExoPlayer mExoPlayer;
 //    private SimpleExoPlayerView mPlayerView;
 //    private MediaSessionCompat mMediaSession;
-//    private PlaybackStateCompat.Builder mStateBuilder;
     private RecyclerView mRecyclerView;
 
-//    private List<Integer> mStepList;
-//    private int mListIndex;
+    private List<String> stepObs;
 
     public StepsFragment(){
     }
@@ -45,11 +36,7 @@ public class StepsFragment extends Fragment
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        return super.onCreateView(inflater, container, savedInstanceState);
-
-        // Inflate layout and set views accordingly (send dummy information to recyclerView adapter)
-
-
+        // Inflate layout and set views accordingly
         View rootView = inflater.inflate(R.layout.fragment_recipe_steps,container,false);
 
         mRecyclerView = rootView.findViewById(R.id.recipe_step_recycler_view);
@@ -57,36 +44,23 @@ public class StepsFragment extends Fragment
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-//        mPlayerView
-
-
         Bundle args = getArguments();
         Step mStep = null;
+        Boolean areNotDelaying = false;
         if (args != null) {
             mStep = args.getParcelable(STEP);
+            areNotDelaying = args.getBoolean("areNotDelaying");
         }
 
-        List<String> stepObs = new ArrayList<>();
+        //  put step data into an object list for the adapter
+        stepObs = new ArrayList<>();
         stepObs.add(mStep.videoURL);
+        stepObs.add(mStep.thumbnailURL);
         stepObs.add(mStep.description);
 
 
-        StepsAdapter mStepsAdapter = new StepsAdapter(stepObs, getContext());
+        StepsAdapter mStepsAdapter = new StepsAdapter(stepObs, getContext(), areNotDelaying);
         mRecyclerView.setAdapter(mStepsAdapter);
-//        mRecyclerView.getChildAt(0);
-
-//        mPlayerView = rootView.findViewById(R.id.step_exoPlayerView);
-
-////        ((TextView) rootView.findViewById(R.id.step_dummy_text)).setText(
-////                "Step " +
-////                Integer.toString(args.getInt(ARG_OBJECT)) +
-////        " " + mStep.shortDes);
-////        getActivity().setTitle(mStep.shortDes);
-//        mPlayerView = rootView.findViewById(R.id.test_exo);
-//        initializeMediaSession();
-//        String url = mStep.videoURL;
-
-//        initializePlayer(Uri.parse(url));
         return rootView;
     }
 
@@ -124,86 +98,6 @@ public class StepsFragment extends Fragment
 //        mMediaSession.setActive(true);
 //    }
 
-//    public void initializePlayer(Uri uri) {
-////        if (exoPlayer == null) {
-////        mPlayerView = getView().findViewById(R.id.step_exoPlayer);
-//        Context context = this.getContext();
-////        mExoPlayer = exoPlayer;
-//        // Create an instance of the ExoPlayer.
-//        TrackSelector trackSelector = new DefaultTrackSelector();
-//        LoadControl loadControl = new DefaultLoadControl();
-//        mExoPlayer = ExoPlayerFactory.newSimpleInstance(context, trackSelector, loadControl);
-//        mPlayerView.setPlayer(mExoPlayer);
-//
-//        // Set the ExoPlayer.EventListener to this activity.
-//        mExoPlayer.addListener(this);
-//
-//        // Prepare the MediaSource.
-//        String userAgent = Util.getUserAgent(context, "Derp");
-////        Uri mediaUri = Uri.parse(mStep.videoURL);
-//        MediaSource mediaSource = new ExtractorMediaSource(uri, new DefaultDataSourceFactory(
-//                context, userAgent), new DefaultExtractorsFactory(), null, null);
-//        mExoPlayer.prepare(mediaSource);
-//        mExoPlayer.setPlayWhenReady(false);
-////        }
-//    }
-
-//    public void getPlayerView(){
-//        View view = mRecyclerView.getChildAt(0);
-//        Log.d(TAG, "getPlayerView: ");
-//    }
-
-
-//    @Override
-//    public void onTimelineChanged(Timeline timeline, Object manifest) {
-//
-//    }
-//
-//    @Override
-//    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-//
-//    }
-//
-//    @Override
-//    public void onLoadingChanged(boolean isLoading) {
-//
-//    }
-//
-//    @Override
-//    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-//        if((playbackState == ExoPlayer.STATE_READY) && playWhenReady){
-//            mStateBuilder.setState(PlaybackStateCompat.STATE_PLAYING,
-//                    mExoPlayer.getCurrentPosition(), 1f);
-//        } else if((playbackState == ExoPlayer.STATE_READY)){
-//            mStateBuilder.setState(PlaybackStateCompat.STATE_PAUSED,
-//                    mExoPlayer.getCurrentPosition(), 1f);
-//        }
-//        mMediaSession.setPlaybackState(mStateBuilder.build());
-////        showNotification(mStateBuilder.build());
-//    }
-//
-//    @Override
-//    public void onPlayerError(ExoPlaybackException error) {
-//
-//    }
-//
-//    @Override
-//    public void onPositionDiscontinuity() {
-//
-//    }
-
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-////        Log.d(TAG, "onStart");
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-////        Log.d(TAG, "onResume");
-//    }
 
     @Override
     public void onDestroy() {
@@ -211,12 +105,6 @@ public class StepsFragment extends Fragment
         releasePlayer();
 //        mMediaSession.setActive(false);
     }
-
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-////        Log.d(TAG, "onPause");
-//    }
 
 
     private void releasePlayer() {
@@ -230,7 +118,6 @@ public class StepsFragment extends Fragment
 
     }
 
-
     private SimpleExoPlayer getExoPlayer(){
         RecyclerView.ViewHolder viewHolder = mRecyclerView.getChildViewHolder(mRecyclerView.getChildAt(0));
         if (viewHolder instanceof VideoViewHolder) {
@@ -239,21 +126,22 @@ public class StepsFragment extends Fragment
         }
         return null;
     }
-
-//    private class MySessionCallback extends MediaSessionCompat.Callback {
-//        @Override
-//        public void onPlay() {
-//            mExoPlayer.setPlayWhenReady(true);
+//    public void initializePlayer(){
+//        Log.d(TAG, "initializePlayer: ");
+//        if (stepObs != null) {
+//            Log.d(TAG, "fragment: " + stepObs.get(0));
+//        }
+//        if(mRecyclerView != null){
+//            Log.d(TAG, "loading: ");
+//            RecyclerView.ViewHolder viewHolder = mRecyclerView.getChildViewHolder(mRecyclerView.getChildAt(0));
+//            if (viewHolder instanceof VideoViewHolder) {
+//                VideoViewHolder videoViewHolder = (VideoViewHolder) viewHolder;
+//                videoViewHolder.getPlayerView().getPlayer().prepare(videoViewHolder.getMediaSource());
+//
+//            }
 //        }
 //
-//        @Override
-//        public void onPause() {
-//            mExoPlayer.setPlayWhenReady(false);
-//        }
-//
-//        @Override
-//        public void onSkipToPrevious() {
-//            mExoPlayer.seekTo(0);
-//        }
 //    }
+
+
 }

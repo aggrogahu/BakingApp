@@ -1,4 +1,4 @@
-package leonard.bakingapp.classes.viewholders;
+package leonard.bakingapp.classes.views;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

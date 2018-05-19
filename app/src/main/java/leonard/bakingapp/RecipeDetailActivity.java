@@ -3,6 +3,7 @@ package leonard.bakingapp;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import leonard.bakingapp.classes.Ingredient;
 import leonard.bakingapp.classes.Recipe;
 import leonard.bakingapp.classes.Step;
 
@@ -19,7 +21,6 @@ import static leonard.bakingapp.RecipeDetailFragment.SELECTED;
 public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailFragment.OnStepClickListener{
     private static final String TAG = RecipeDetailActivity.class.getSimpleName();
     private boolean mTwoPane;
-//    private RecyclerView.Adapter mAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,11 +39,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
             // Initialize the step detail with first step if two pane
             if (savedInstanceState == null){
                 displayStep(0);
-            } else {
-//                mTwoPane = false;
             }
 
-        }else {
+        } else {
             mTwoPane = false;
         }
 
@@ -57,27 +56,14 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
                     .commit();
         }
 
-
-//            Log.d("M", "something saved");
-//            mFragment = getSupportFragmentManager().getFragment(savedInstanceState, FRAGMENT_STATE);
-//            if (mFragment.isAdded()) {
-//                return;
-//            }else {
-//                Log.d("M", "else");
-//                getSupportFragmentManager().beginTransaction()
-//                        .add(R.id.main_container, mFragment)
-//                        .commit();
-//            }
-
-
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume");
-    }
-
+    /**
+     * implement the interface that acts as an on click listener for the recipe detail recyclerview
+     * @param position  position of the items that was clicked
+     * @param recipe  the recipe used to launch the step detail activity or display fragment
+     * @return  true if this is a two pane tablet layout; false means this is a single fragment display
+     */
     @Override
     public boolean onStepSelected(int position, Recipe recipe) {
         //figure out offset to get position of recipe steps in the recycler view
@@ -104,11 +90,16 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         return mTwoPane;
     }
 
+    /**
+     *  display the step detail fragment in the second pane
+     * @param position index number of the step to display
+     */
     private void displayStep(int position){
         StepsFragment stepsFragment = new StepsFragment();
         Bundle arg = new Bundle();
         Recipe recipe = getIntent().getParcelableExtra("recipe");
         arg.putParcelable(StepsFragment.STEP, recipe.steps[position]);
+        arg.putBoolean("areNotDelaying", true); // functionality not yet implemented
         stepsFragment.setArguments(arg);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.step_detail_container, stepsFragment)
@@ -118,8 +109,5 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        outState.putBoolean("twopane", mTwoPane);
-//        RecipeDetailFragment recipeDetailFragment = ()getFragmentManager().findFragmentById(R.id.recipe_detail_container);
-//        getSupportFragmentManager().putFragment(outState, "myFragmentName", recipeDetailFragment);
     }
 }
