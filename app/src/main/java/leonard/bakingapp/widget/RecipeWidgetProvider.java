@@ -119,7 +119,7 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
 
 
 
-//        RemoteViews test = new RemoteViews(context.getPackageName(), R.layout.step_short_desc);
+//        RemoteViews test = new RemoteViews(context.getPackageName(), R.layout.config_text_layout);
 //        test.setTextViewText(R.id.short_desc_text_view,"position:");
 //        remoteViewPage.addView(R.id.widget_page_linear_layout,test);
 
@@ -137,8 +137,8 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
 
 //        views.setEmptyView(R.id.recipe_view_flipper,R.id.empty_view);
         // dummy information
-//        RemoteViews test1 = new RemoteViews(context.getPackageName(),R.layout.step_short_desc);
-//        RemoteViews test2 = new RemoteViews(context.getPackageName(),R.layout.step_short_desc);
+//        RemoteViews test1 = new RemoteViews(context.getPackageName(),R.layout.config_text_layout);
+//        RemoteViews test2 = new RemoteViews(context.getPackageName(),R.layout.config_text_layout);
 //        test1.setTextViewText(R.id.short_desc_text_view, "getCount: " + cerp);
 //        views.addView(R.id.recipe_view_flipper,test1);
 //        test2.setTextViewText(R.id.short_desc_text_view, "getCount: " + mCursor.getCount());

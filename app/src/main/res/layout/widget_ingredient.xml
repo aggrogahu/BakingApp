@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ingredient_linear_layout"
     android:orientation="horizontal"
     android:layout_width="match_parent"
@@ -9,16 +10,18 @@
 
     <TextView
         android:id="@+id/widget_measure_text_view"
-        android:layout_height="wrap_content"
         android:layout_width="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        android:textStyle="bold"
         android:layout_marginStart="8dp"
-        android:text="measure"/>
+        android:textStyle="bold"
+        tools:text="1 tblsp"
+        android:textColor="#555"/>
 
     <TextView
         android:id="@+id/widget_ingredient_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ingredient"/>
+        tools:text="ingredient"
+        android:textColor="#888"/>
 </LinearLayout>

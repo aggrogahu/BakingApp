@@ -63,7 +63,7 @@ public class RecipeWidgetConfigure extends AppCompatActivity {
             }
         }
 
-        mListView.setAdapter(new ArrayAdapter<String>(this,R.layout.step_short_desc,recipes));
+        mListView.setAdapter(new ArrayAdapter<String>(this,R.layout.config_text_layout,recipes));
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Debug;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -78,15 +79,20 @@ class RecipeRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory 
         }
         mCursor.moveToPosition(position);
         Ingredient ingredient = ingredients[position];
-        RemoteViews ingredientRv = new RemoteViews(mContext.getPackageName(), R.layout.widget_ingredient);
-//        ingredientRv.setTextViewText(R.id.short_desc_text_view,ingredient.ingredient);
         String m = ingredient.measure.toLowerCase();
         if (m.equals("unit")) {
             m = "";
         }
-        ingredientRv.setTextViewText(R.id.widget_ingredient_text_view, ingredient.ingredient);
-        ingredientRv.setTextViewText(R.id.widget_measure_text_view, ingredient.quantity + " " + m);
-        return ingredientRv;
+        String measure = ingredient.quantity + " " + m;
+        String ingredientString = ingredient.ingredient;
+
+            RemoteViews ingredientRv = new RemoteViews(mContext.getPackageName(), R.layout.widget_ingredient);
+//        ingredientRv.setTextViewText(R.id.short_desc_text_view,ingredient.ingredient);
+
+            ingredientRv.setTextViewText(R.id.widget_ingredient_text_view, ingredientString);
+            ingredientRv.setTextViewText(R.id.widget_measure_text_view,measure);
+            return ingredientRv;
+
 //        return null;
     }
 
