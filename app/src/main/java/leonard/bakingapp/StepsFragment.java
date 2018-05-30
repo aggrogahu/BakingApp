@@ -11,7 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +27,17 @@ import leonard.bakingapp.classes.views.VideoViewHolder;
 
 public class StepsFragment extends Fragment {
     public static final String STEP = "step";
-    public static final String ARG_OBJECT = "object";
+    public static final String AUTO_PLAY_POS = "autoplay";
     private static final String TAG = StepsFragment.class.getSimpleName();
-//    private SimpleExoPlayer mExoPlayer;
+    private static final String PLAY_WHEN_READY = "play_when_ready";
+    //    private SimpleExoPlayer mExoPlayer;
 //    private SimpleExoPlayerView mPlayerView;
 //    private MediaSessionCompat mMediaSession;
     private RecyclerView mRecyclerView;
 
     private List<String> stepObs;
+    private long playbackPosition;
+    private boolean playWhenReady;
 
     public StepsFragment(){
     }
@@ -37,6 +46,8 @@ public class StepsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate layout and set views accordingly
+
+
         View rootView = inflater.inflate(R.layout.fragment_recipe_steps,container,false);
 
         mRecyclerView = rootView.findViewById(R.id.recipe_step_recycler_view);
@@ -46,10 +57,11 @@ public class StepsFragment extends Fragment {
 
         Bundle args = getArguments();
         Step mStep = null;
-        Boolean areNotDelaying = false;
+        boolean playWhenReady = false;
+        long playbackPosition =0;
         if (args != null) {
             mStep = args.getParcelable(STEP);
-            areNotDelaying = args.getBoolean("areNotDelaying");
+            playWhenReady = args.getBoolean("playWhenReady");
         }
 
         //  put step data into an object list for the adapter
@@ -59,7 +71,13 @@ public class StepsFragment extends Fragment {
         stepObs.add(mStep.description);
 
 
-        StepsAdapter mStepsAdapter = new StepsAdapter(stepObs, getContext(), areNotDelaying);
+        if(savedInstanceState!=null){
+            Log.d(TAG, "onCreate: not null");
+            playbackPosition = savedInstanceState.getLong(AUTO_PLAY_POS,0);
+            playWhenReady = savedInstanceState.getBoolean(PLAY_WHEN_READY,false);
+        }
+
+        StepsAdapter mStepsAdapter = new StepsAdapter(stepObs, getContext(), playbackPosition,playWhenReady );
         mRecyclerView.setAdapter(mStepsAdapter);
         return rootView;
     }
@@ -100,9 +118,38 @@ public class StepsFragment extends Fragment {
 
 
     @Override
+    public void onStart() {
+        super.onStart();
+        SimpleExoPlayer exoPlayer = getExoPlayer();
+        if (exoPlayer!= null){
+            RecyclerView.ViewHolder viewHolder = mRecyclerView.getChildViewHolder(mRecyclerView.getChildAt(0));
+            if (viewHolder instanceof VideoViewHolder) {
+                VideoViewHolder videoViewHolder = (VideoViewHolder) viewHolder;
+                videoViewHolder.getPlayerView().setPlayer(newExoPlayer());
+                videoViewHolder.getPlayerView().getPlayer().prepare(videoViewHolder.getMediaSource());
+                videoViewHolder.getPlayerView().getPlayer().seekTo(playbackPosition);
+
+            }
+        }
+    }
+
+    private SimpleExoPlayer newExoPlayer(){
+        // Create an instance of the ExoPlayer.
+        TrackSelector trackSelector = new DefaultTrackSelector();
+        LoadControl loadControl = new DefaultLoadControl();
+        return ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        releasePlayer();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
-        releasePlayer();
+//        releasePlayer();
 //        mMediaSession.setActive(false);
     }
 
@@ -110,8 +157,12 @@ public class StepsFragment extends Fragment {
     private void releasePlayer() {
         Log.d(TAG, "releasePlayer");
 
+
+
         SimpleExoPlayer exoPlayer = getExoPlayer();
         if (exoPlayer!= null){
+            playbackPosition = exoPlayer.getCurrentPosition();
+            playWhenReady = exoPlayer.getPlayWhenReady();
             exoPlayer.stop();
             exoPlayer.release();
         }
@@ -119,14 +170,24 @@ public class StepsFragment extends Fragment {
     }
 
     private SimpleExoPlayer getExoPlayer(){
-        RecyclerView.ViewHolder viewHolder = mRecyclerView.getChildViewHolder(mRecyclerView.getChildAt(0));
-        if (viewHolder instanceof VideoViewHolder) {
-            VideoViewHolder videoViewHolder = (VideoViewHolder) viewHolder;
-            return videoViewHolder.getPlayerView().getPlayer();
+        if (mRecyclerView.getChildCount()!=0) {
+            RecyclerView.ViewHolder viewHolder = mRecyclerView.getChildViewHolder(mRecyclerView.getChildAt(0));
+            if (viewHolder instanceof VideoViewHolder) {
+                VideoViewHolder videoViewHolder = (VideoViewHolder) viewHolder;
+                return videoViewHolder.getPlayerView().getPlayer();
+            }
         }
         return null;
     }
-//    public void initializePlayer(){
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong(AUTO_PLAY_POS,playbackPosition);
+        outState.putBoolean(PLAY_WHEN_READY,playWhenReady);
+    }
+
+    //    public void initializePlayer(){
 //        Log.d(TAG, "initializePlayer: ");
 //        if (stepObs != null) {
 //            Log.d(TAG, "fragment: " + stepObs.get(0));
