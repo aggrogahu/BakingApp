@@ -1,10 +1,6 @@
 package leonard.bakingapp;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.MediaMetadataRetriever;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -44,15 +40,18 @@ public class StepsAdapter extends RecyclerView.Adapter {
     private final int VIDEO = 12;
     private final int IMAGE = 13;
     private final int EMPTY = 69;
+    private long mPlaybackPosition;
     private boolean areNotDelaying; // functionality is not yet implemented
+    private boolean playWhenReady;
 private Context mContext;
 
 
 
-    public StepsAdapter(List<String> strings, Context context, Boolean bool){
+    public StepsAdapter(List<String> strings, Context context, long playbackPosition, boolean bool){
         mStepObs = strings;
         mContext = context;
-        areNotDelaying = bool;
+        mPlaybackPosition = playbackPosition;
+        playWhenReady = bool;
     }
 
 
@@ -141,6 +140,8 @@ private Context mContext;
         videoViewHolder.setMediaSource(mediaSource);
 //        if(areNotDelaying) {
             mExoPlayer.prepare(mediaSource);
+            mExoPlayer.seekTo(mPlaybackPosition);
+            mExoPlayer.setPlayWhenReady(playWhenReady);
 //        }
 //        mExoPlayer.setPlayWhenReady(false);
     }

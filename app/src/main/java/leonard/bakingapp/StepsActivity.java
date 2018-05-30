@@ -16,7 +16,7 @@ import java.util.List;
 import leonard.bakingapp.classes.Step;
 
 public class StepsActivity extends AppCompatActivity {
-//    private static final String TAG = StepsActivity.class.getSimpleName();
+    private static final String TAG = StepsActivity.class.getSimpleName();
     StepsPagerAdapter mStepsPagerAdapter;
     ViewPager mViewPager;
     private FloatingActionButton rightFAB, leftFAB;
@@ -28,6 +28,7 @@ public class StepsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_step_detail);
         int orientation = getResources().getConfiguration().orientation;
         int position = getIntent().getIntExtra("selectedStep", 0);

@@ -15,10 +15,12 @@ import leonard.bakingapp.classes.Step;
 class StepsPagerAdapter extends FragmentStatePagerAdapter{
     private final String TAG = StepsAdapter.class.getSimpleName();
     private List<Step> mStepList;
+//    private boolean playWhenReady;
 
     public StepsPagerAdapter(FragmentManager fm, List<Step> stepList) {
         super(fm);
         mStepList = stepList;
+//        playWhenReady = bool;
     }
 
     @Override
@@ -26,7 +28,8 @@ class StepsPagerAdapter extends FragmentStatePagerAdapter{
         // initialize and return step fragment
         Fragment fragment = new StepsFragment();
         Bundle args = new Bundle();
-        args.putInt(StepsFragment.ARG_OBJECT, position + 1);
+//        args.putInt(StepsFragment.ARG_OBJECT, po§*sition + 1);ou+
+//        args.putBoolean(StepsFragment.AUTO_PLAY_POS, playWhenReady);
         args.putParcelable(StepsFragment.STEP, mStepList.get(position));
         fragment.setArguments(args);
         return fragment;
